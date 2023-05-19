@@ -3,12 +3,8 @@ import  React, {useState} from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
+
 import Box from '@mui/material/Box';
-import PersonAddOutlinedIcon from '@mui/icons-material/PersonAddOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -22,7 +18,6 @@ export default function AddProprio() {
     const [nom, setNom] = useState('');
     const [cni, setCNI] = useState('');
     const [phone, setPhone] = useState('');
-
   //creating the proprio 
   const handleSubmit = (event) => {
     const data = {
@@ -31,14 +26,14 @@ export default function AddProprio() {
         phone: phone,
       };
     event.preventDefault();
-    axios.post(`${serverUrl}/addproprio`, data)
+    axios.post(`${serverUrl}/api/proprio/addproprio`, data)
       .then((response) => {
-        console.log(response.data); // Réponse du serveur
-        // Réinitialiser les champs du formulaire
-        toast.success('Propriétaire ajouté avec succès')
         setNom('');
         setCNI('');
         setPhone('');
+        console.log(response.data); // Réponse du serveur
+        // Réinitialiser les champs du formulaire
+        toast.success('Propriétaire ajouté avec succès')
       })
       .catch((error) => {
         console.error(error);
@@ -68,7 +63,8 @@ export default function AddProprio() {
               fullWidth
               id="nom"
               label="Nom"
-              name="nom"
+              name={nom}
+              onChange={(e) => setNom(e.target.value)} // update state on change
               autoFocus
             />
             <TextField
@@ -76,6 +72,8 @@ export default function AddProprio() {
               required
               fullWidth
               name="cni"
+              onChange={(e) => setCNI(e.target.value)} // update state on change
+              autoFocus
               label="CNI"
               id="cni"
             />
@@ -84,6 +82,8 @@ export default function AddProprio() {
               required
               fullWidth
               name="phone"
+              onChange={(e) => setPhone(e.target.value)} // update state on change
+              autoFocus
               label="Téléphone"
               id="phone"
             />

@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, TextField, Typography, Container, Select, MenuItem, InputLabel } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { serverUrl } from '../../server';
+import { getProprios } from '../proprios/proprio.js';
 
 const defaultTheme = createTheme();
 
@@ -14,6 +15,20 @@ const AddCamion = () => {
   const [etat, setEtat] = useState('');
   const [miseEnCirculation, setMiseEnCirculation] = useState('');
   const [proprioId, setProprioId] = useState('');
+  const [proprioOptions, setProprioOptions] = useState([]);
+
+  useEffect(() => {
+    // Fetch proprio data from the server
+    getProprios()
+      .then((proprios) => {
+        setProprioOptions(proprios);
+      })
+      .catch((error) => {
+        console.error(error);
+        // Handle error if needed
+      });
+  }, []);
+  
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -27,7 +42,7 @@ const AddCamion = () => {
     };
 
     axios
-      .post(`${serverUrl}/addcamion`, data)
+      .post(`${serverUrl}/api/camion/addcamion`, data)
       .then((response) => {
         console.log(response.data); // Server response
         toast.success('Camion added successfully');
@@ -44,12 +59,7 @@ const AddCamion = () => {
       });
   };
 
-  // Example data for proprio select options
-  const proprioOptions = [
-    { id: 1, name: 'Proprio 1', cni: '123456' },
-    { id: 2, name: 'Proprio 2', cni: '789012' },
-    // Add more options as needed
-  ];
+
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -119,12 +129,12 @@ const AddCamion = () => {
           >
             {proprioOptions.map((proprio) => (
               <MenuItem key={proprio.id} value={proprio.id}>
-                {proprio.name}
+                {proprio.nom}
               </MenuItem>
             ))}
           </Select>
           <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-            Add
+            Ajouter
           </Button>
         </form>
       </Container>

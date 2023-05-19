@@ -8,23 +8,23 @@ import { serverUrl } from '../../server';
 const defaultTheme = createTheme();
 
 const AddProduit = () => {
-  const [type, setType] = useState('');
   const [nom, setNom] = useState('');
+  const [type, setType] = useState('');
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = {
-      type: type,
       nom: nom,
+      type: type,
     };
 
     axios
-      .post(`${serverUrl}/addproduit`, data)
+      .post(`${serverUrl}/api/produit/addproduit`, data)
       .then((response) => {
         console.log(response.data); // Server response
         toast.success('Produit added successfully');
-        setType('');
         setNom('');
+        setType('');
       })
       .catch((error) => {
         console.error(error);
@@ -43,22 +43,22 @@ const AddProduit = () => {
             margin="normal"
             required
             fullWidth
-            id="type"
-            label="Type"
-            name="type"
+            id="nom"
+            label="Nom"
+            name="nom"
             autoFocus
-            value={type}
-            onChange={(e) => setType(e.target.value)}
+            value={nom}
+            onChange={(e) => setNom(e.target.value)}
           />
           <TextField
             margin="normal"
             required
             fullWidth
-            name="nom"
-            label="Nom"
-            id="nom"
-            value={nom}
-            onChange={(e) => setNom(e.target.value)}
+            name="type"
+            label="Type"
+            id="type"
+            value={type}
+            onChange={(e) => setType(e.target.value)}
           />
           <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
             Add

@@ -9,25 +9,25 @@ const defaultTheme = createTheme();
 
 const AddChauffeur = () => {
   const [nom, setNom] = useState('');
-  const [phone, setPhone] = useState('');
   const [cni, setCNI] = useState('');
+  const [phone, setPhone] = useState('');
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = {
       nom: nom,
-      phone: phone,
       cni: cni,
+      phone: phone,
     };
 
     axios
-      .post(`${serverUrl}/addchauffeur`, data)
+      .post(`${serverUrl}/api/chauffeur/addchauffeur`, data)
       .then((response) => {
         console.log(response.data); // Server response
         toast.success('Chauffeur added successfully');
         setNom('');
-        setPhone('');
         setCNI('');
+        setPhone('');
       })
       .catch((error) => {
         console.error(error);
@@ -57,24 +57,24 @@ const AddChauffeur = () => {
             margin="normal"
             required
             fullWidth
-            name="phone"
-            label="Téléphone"
-            id="phone"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-          />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
             name="cni"
             label="CNI"
             id="cni"
             value={cni}
             onChange={(e) => setCNI(e.target.value)}
           />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="phone"
+            label="Téléphone"
+            id="phone"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+          />
           <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-            Add
+            Ajouter
           </Button>
         </form>
       </Container>
