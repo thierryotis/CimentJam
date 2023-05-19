@@ -1,0 +1,85 @@
+import React, { useState } from 'react';
+import { Button, TextField, Typography, Container } from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { toast } from 'react-toastify';
+import axios from 'axios';
+import { serverUrl } from '../../server';
+
+const defaultTheme = createTheme();
+
+const AddChauffeur = () => {
+  const [nom, setNom] = useState('');
+  const [phone, setPhone] = useState('');
+  const [cni, setCNI] = useState('');
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const data = {
+      nom: nom,
+      phone: phone,
+      cni: cni,
+    };
+
+    axios
+      .post(`${serverUrl}/addchauffeur`, data)
+      .then((response) => {
+        console.log(response.data); // Server response
+        toast.success('Chauffeur added successfully');
+        setNom('');
+        setPhone('');
+        setCNI('');
+      })
+      .catch((error) => {
+        console.error(error);
+        toast.error(error);
+      });
+  };
+
+  return (
+    <ThemeProvider theme={defaultTheme}>
+      <Container component="main" maxWidth="xs">
+        <Typography component="h1" variant="h5">
+          Add Chauffeur
+        </Typography>
+        <form onSubmit={handleSubmit}>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="nom"
+            label="Nom"
+            name="nom"
+            autoFocus
+            value={nom}
+            onChange={(e) => setNom(e.target.value)}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="phone"
+            label="Téléphone"
+            id="phone"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="cni"
+            label="CNI"
+            id="cni"
+            value={cni}
+            onChange={(e) => setCNI(e.target.value)}
+          />
+          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+            Add
+          </Button>
+        </form>
+      </Container>
+    </ThemeProvider>
+  );
+};
+
+export default AddChauffeur;
