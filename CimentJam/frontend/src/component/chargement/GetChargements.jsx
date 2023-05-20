@@ -15,33 +15,33 @@ const modalStyles = {
   },
 };
 
-const GetDechargements = () => {
+const GetChargements = () => {
   Modal.setAppElement('#root'); // Replace '#root' with the ID of your root element
-  const [dechargements, setDechargements] = useState([]);
+  const [chargements, setChargements] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
-  const [selectedDechargement, setSelectedDechargement] = useState(null);
+  const [selectedChargement, setSelectedChargement] = useState(null);
 
-  const openModal = (dechargement) => {
-    setSelectedDechargement(dechargement);
+  const openModal = (chargement) => {
+    setSelectedChargement(chargement);
     setModalOpen(true);
   };
 
   const closeModal = () => {
-    setSelectedDechargement(null);
+    setSelectedChargement(null);
     setModalOpen(false);
   };
 
-  const deleteDechargement = (id) => {
+  const deleteChargement = (id) => {
     axios
-      .delete(`${serverUrl}/api/dechargement/deletedechargement/${id}`)
+      .delete(`${serverUrl}/api/chargement/deletechargement/${id}`)
       .then((response) => {
         if (response.data.success) {
-          toast.success('Dechargement deleted successfully');
-          // Refresh the list of dechargements after deletion
+          toast.success('Chargement deleted successfully');
+          // Refresh the list of chargements after deletion
           axios
-            .get(`${serverUrl}/api/dechargement/getdechargements`)
+            .get(`${serverUrl}/api/chargement/getchargements`)
             .then((response) => {
-              setDechargements(response.data.dechargements);
+              setChargements(response.data.chargements);
             })
             .catch((error) => {
               console.error(error);
@@ -50,12 +50,12 @@ const GetDechargements = () => {
             closeModal();
           }, 1000);
         } else {
-          toast.error('Error deleting the dechargement');
+          toast.error('Error deleting the chargement');
         }
       })
       .catch((error) => {
         console.error(error);
-        toast.error('An error occurred while deleting the dechargement');
+        toast.error('An error occurred while deleting the chargement');
         setTimeout(() => {
           closeModal();
         }, 1000);
@@ -64,9 +64,9 @@ const GetDechargements = () => {
 
   useEffect(() => {
     axios
-      .get(`${serverUrl}/api/dechargement/getdechargements`) // Assuming the server is running on the same host
+      .get(`${serverUrl}/api/chargement/getchargements`) // Assuming the server is running on the same host
       .then((response) => {
-        setDechargements(response.data.dechargements);
+        setChargements(response.data.chargements);
       })
       .catch((error) => {
         console.error(error);
@@ -79,35 +79,41 @@ const GetDechargements = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>N° Bordereau</TableCell>
-              <TableCell>N° Bon Commande</TableCell>
-              <TableCell>Etat Camion</TableCell>
-              <TableCell>Lieu Dechargement</TableCell>
-              <TableCell>Poids Camion Decharge</TableCell>
-              <TableCell>Poids Camion Apres Chargement</TableCell>
+              <TableCell>Numero Bordereau</TableCell>
+              <TableCell>Numero Bon Commande</TableCell>
+              <TableCell>Date</TableCell>
+              <TableCell>Lieu</TableCell>
+              <TableCell>Poids Camion Charge</TableCell>
+              <TableCell>Poids Camion Vide</TableCell>
               <TableCell>Shift 1</TableCell>
               <TableCell>Shift 2</TableCell>
-              <TableCell>Chargement ID</TableCell>
+              <TableCell>Operateur</TableCell>
+              <TableCell>Chauffeur ID</TableCell>
+              <TableCell>Camion ID</TableCell>
+              <TableCell>Type Produit ID</TableCell>
               <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {dechargements.map((dechargement) => (
-              <TableRow key={dechargement.id}>
-                <TableCell>{dechargement.numero_bordereau}</TableCell>
-                <TableCell>{dechargement.numero_bon_commande}</TableCell>
-                <TableCell>{dechargement.etat_camion}</TableCell>
-                <TableCell>{dechargement.lieu_dechargement}</TableCell>
-                <TableCell>{dechargement.poids_camion_decharge}</TableCell>
-                <TableCell>{dechargement.poids_camion_apres_chargement}</TableCell>
-                <TableCell>{dechargement.shift1}</TableCell>
-                <TableCell>{dechargement.shift2}</TableCell>
-                <TableCell>{dechargement.chargement_id}</TableCell>
+            {chargements.map((chargement) => (
+              <TableRow key={chargement.id}>
+                <TableCell>{chargement.numero_bordereau}</TableCell>
+                <TableCell>{chargement.numero_bon_commande}</TableCell>
+                <TableCell>{chargement.date}</TableCell>
+                <TableCell>{chargement.lieu}</TableCell>
+                <TableCell>{chargement.poids_camion_charge}</TableCell>
+                <TableCell>{chargement.poids_camion_vide}</TableCell>
+                <TableCell>{chargement.shift1}</TableCell>
+                <TableCell>{chargement.shift2}</TableCell>
+                <TableCell>{chargement.operateur}</TableCell>
+                <TableCell>{chargement.chauffeur_id}</TableCell>
+                <TableCell>{chargement.camion_id}</TableCell>
+                <TableCell>{chargement.type_produit_id}</TableCell>
                 <TableCell>
-                  <Button onClick={() => openModal(dechargement)}>
+                  <Button onClick={() => openModal(chargement)}>
                     <EditIcon />
                   </Button>
-                  <Button onClick={() => openModal(dechargement)}>
+                  <Button onClick={() => openModal(chargement)}>
                     <DeleteIcon />
                   </Button>
                 </TableCell>
@@ -118,11 +124,11 @@ const GetDechargements = () => {
       </TableContainer>
 
       <Modal isOpen={modalOpen} onRequestClose={closeModal} ariaHideApp={false} style={modalStyles}>
-        {selectedDechargement && (
+        {selectedChargement && (
           <>
             <h2>Confirmation</h2>
-            <p>Do you really want to delete this dechargement?</p>
-            <Button onClick={() => deleteDechargement(selectedDechargement.id)}>Confirm</Button>
+            <p>Do you really want to delete this chargement?</p>
+            <Button onClick={() => deleteChargement(selectedChargement.id)}>Confirm</Button>
             <Button onClick={closeModal}>Cancel</Button>
           </>
         )}
@@ -131,4 +137,4 @@ const GetDechargements = () => {
   );
 };
 
-export default GetDechargements;
+export default GetChargements;
