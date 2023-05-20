@@ -1,17 +1,13 @@
-import React from "react";
-import './App.css';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import Login from "./component/Login";
-import AddProprio from "./component/proprios/AddProprio";
-import GetProprios from "./component/proprios/getProprios";
-import AddChauffeur from "./component/chauffeur/AddChauffeur";
-import GetChauffeurs from "./component/chauffeur/GetChauffeurs";
-import AddCamion from "./component/camion/AddCamion";
-import GetCamions from "./component/camion/GetCamions";
-import AddProduit from "./component/produit/AddProduit";
-import GetProduits from "./component/produit/GetProduits";
+import { BrowserRouter } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
+// routes
+import Router from './routes';
+// theme
+import ThemeProvider from './theme';
+// component
+import { StyledChart } from './component/chart';
+import ScrollToTop from './component/scroll-to-top';
+
 
 import AddChargement from "./component/chargement/AddChargement";
 import GetChargements from "./component/chargement/GetChargements";
@@ -54,7 +50,20 @@ function App() {
         theme="dark"
       />
     </BrowserRouter>
+=======
+// ----------------------------------------------------------------------
+
+export default function App() {
+  return (
+    <HelmetProvider>
+      <BrowserRouter>
+        <ThemeProvider>
+          <ScrollToTop />
+          <StyledChart />
+          <Router />
+        </ThemeProvider>
+      </BrowserRouter>
+    </HelmetProvider>
+>>>>>>> addingTemplate
   );
 }
-
-export default App;
