@@ -5,6 +5,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import Modal from 'react-modal';
 
+
 import {serverUrl} from '../../server';
 import { toast } from "react-toastify";
 
@@ -102,7 +103,7 @@ export default function GetProprios() {
         </Table>
       </TableContainer>
   
-      <Modal isOpen={modalOpen} onRequestClose={closeModal} ariaHideApp={false}>
+      <Modal isOpen={modalOpen} onRequestClose={closeModal} ariaHideApp={false} style={modalStyles}>
         {selectedProprio && (
           <>
             <h2>Confirmation</h2>

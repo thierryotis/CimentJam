@@ -1,51 +1,25 @@
-import React from "react";
-import './App.css';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import Login from "./component/Login";
-import AddProprio from "./component/proprios/AddProprio";
-import GetProprios from "./component/proprios/getProprios";
-import AddChauffeur from "./component/chauffeur/AddChauffeur";
-import GetChauffeurs from "./component/chauffeur/GetChauffeurs";
-import AddCamion from "./component/camion/AddCamion";
-import GetCamions from "./component/camion/GetCamions";
-import AddProduit from "./component/produit/AddProduit";
-import GetProduits from "./component/produit/GetProduits";
+import { BrowserRouter } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
+// routes
+import Router from './routes';
+// theme
+import ThemeProvider from './theme';
+// component
+import { StyledChart } from './component/chart';
+import ScrollToTop from './component/scroll-to-top';
 
-import AddChargement from "./component/chargement/AddChargement";
+// ----------------------------------------------------------------------
 
-
-function App() {
+export default function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Login />}  />
-        <Route path="/addproprio" element={<AddProprio />}  />
-        <Route path="/getproprios" element={<GetProprios />}  />
-        <Route path="/addchauffeur" element={<AddChauffeur />}  />
-        <Route path="/getchauffeurs" element={<GetChauffeurs />}  />
-        <Route path="/addcamion" element={<AddCamion />}  />
-        <Route path="/getcamions" element={<GetCamions />}  />
-        <Route path="/addproduit" element={<AddProduit />}  />
-        <Route path="/getproduits" element={<GetProduits />}  />
-
-        <Route path="/addchargement" element={<AddChargement />}  />
-      </Routes>
-      <ToastContainer
-        position="bottom-center"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-      />
-    </BrowserRouter>
+    <HelmetProvider>
+      <BrowserRouter>
+        <ThemeProvider>
+          <ScrollToTop />
+          <StyledChart />
+          <Router />
+        </ThemeProvider>
+      </BrowserRouter>
+    </HelmetProvider>
   );
 }
-
-export default App;
