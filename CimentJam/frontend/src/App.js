@@ -14,7 +14,10 @@ import AddProduit from "./component/produit/AddProduit";
 import GetProduits from "./component/produit/GetProduits";
 
 import AddChargement from "./component/chargement/AddChargement";
+import GetChargements from "./component/chargement/GetChargements";
 
+import AddDechargement from "./component/dechargement/Adddechargement";
+import GetDechargements from "./component/dechargement/GetDechargements";
 
 function App() {
   return (
@@ -31,6 +34,12 @@ function App() {
         <Route path="/getproduits" element={<GetProduits />}  />
 
         <Route path="/addchargement" element={<AddChargement />}  />
+        <Route path="/getchargements" element={<GetChargements />}  />
+
+        <Route path="/adddechargement" element={<AddDechargement />}  />
+        <Route path="/getdechargements" element={<GetDechargements />}  />
+
+
       </Routes>
       <ToastContainer
         position="bottom-center"

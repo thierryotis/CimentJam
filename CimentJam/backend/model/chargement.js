@@ -30,7 +30,13 @@ const getChargement = async (id) => {
 const getChargements = async () => {
   try {
     const connection = await connectDatabase();
-    const query = "SELECT * FROM chargements";
+    const query = `
+      SELECT c.*, ch.nom as chauffeur_nom, ca.immatriculation as camion_immatriculation, p.nom as produit_nom
+      FROM chargements c
+      JOIN chauffeurs ch ON c.chauffeur_id = ch.id
+      JOIN camions ca ON c.camion_id = ca.id
+      JOIN produits p ON c.type_produit_id = p.id
+    `;
     const [rows] = await connection.query(query);
     connection.end();
     return rows;
@@ -38,6 +44,7 @@ const getChargements = async () => {
     throw error;
   }
 };
+
 
 // Update chargement
 const updateChargement = async (id, numero_bordereau, numero_bon_commande, date, lieu, poids_camion_charge, poids_camion_vide, shift1, shift2, operateur, chauffeur_id, camion_id, type_produit_id) => {
