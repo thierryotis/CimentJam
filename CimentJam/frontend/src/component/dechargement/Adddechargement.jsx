@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import React, { useState } from 'react';
 import { Button, TextField, Typography, Container } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { toast } from 'react-toastify';
@@ -58,7 +57,7 @@ const AddDechargement = () => {
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
         <Typography component="h1" variant="h5">
-          Add Dechargement
+          Ajouter Dechargement
         </Typography>
         <form onSubmit={handleSubmit}>
           <TextField
