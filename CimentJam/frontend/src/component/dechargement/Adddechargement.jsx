@@ -11,6 +11,7 @@ const AddDechargement = () => {
   const [numeroBordereau, setNumeroBordereau] = useState('');
   const [numeroBonCommande, setNumeroBonCommande] = useState('');
   const [etatCamion, setEtatCamion] = useState('');
+  const [date, setDate] = useState('2023-05-20');
   const [lieuDechargement, setLieuDechargement] = useState('');
   const [poidsCamionDecharge, setPoidsCamionDecharge] = useState('');
   const [poidsCamionApresChargement, setPoidsCamionApresChargement] = useState('');
@@ -24,6 +25,7 @@ const AddDechargement = () => {
       numero_bordereau: numeroBordereau,
       numero_bon_commande: numeroBonCommande,
       etat_camion: etatCamion,
+      date : date,
       lieu_dechargement: lieuDechargement,
       poids_camion_decharge: poidsCamionDecharge,
       poids_camion_apres_chargement: poidsCamionApresChargement,
@@ -40,6 +42,7 @@ const AddDechargement = () => {
         setNumeroBordereau('');
         setNumeroBonCommande('');
         setEtatCamion('');
+        setDate('');
         setLieuDechargement('');
         setPoidsCamionDecharge('');
         setPoidsCamionApresChargement('');
