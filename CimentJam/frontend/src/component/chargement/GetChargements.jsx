@@ -83,18 +83,18 @@ const GetChargements = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>N° Bordereau</TableCell>
-              <TableCell>N° Bon Commande</TableCell>
+              <TableCell>Numero Bordereau</TableCell>
+              <TableCell>Numero Bon Commande</TableCell>
               <TableCell>Date</TableCell>
               <TableCell>Lieu</TableCell>
-              <TableCell>Poids  Charge</TableCell>
-              <TableCell>Poids  Vide</TableCell>
+              <TableCell>Poids Camion Charge</TableCell>
+              <TableCell>Poids Camion Vide</TableCell>
               <TableCell>Shift 1</TableCell>
               <TableCell>Shift 2</TableCell>
               <TableCell>Operateur</TableCell>
-              <TableCell>Chauffeur</TableCell>
-              <TableCell>Camion</TableCell>
-              <TableCell>Produit ID</TableCell>
+              <TableCell>Chauffeur ID</TableCell>
+              <TableCell>Camion ID</TableCell>
+              <TableCell>Type Produit ID</TableCell>
               <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>

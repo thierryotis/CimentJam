@@ -82,7 +82,8 @@ const GetDechargements = () => {
               <TableCell>N° Bordereau</TableCell>
               <TableCell>N° Bon Commande</TableCell>
               <TableCell>Etat Camion</TableCell>
-              <TableCell>Lieu Dechargement</TableCell>
+              <TableCell>Date</TableCell>
+              <TableCell>Lieu </TableCell>
               <TableCell>Poids Camion Decharge</TableCell>
               <TableCell>Poids Camion Apres Chargement</TableCell>
               <TableCell>Shift 1</TableCell>
@@ -97,6 +98,7 @@ const GetDechargements = () => {
                 <TableCell>{dechargement.numero_bordereau}</TableCell>
                 <TableCell>{dechargement.numero_bon_commande}</TableCell>
                 <TableCell>{dechargement.etat_camion}</TableCell>
+                <TableCell>{dechargement.date}</TableCell>
                 <TableCell>{dechargement.lieu_dechargement}</TableCell>
                 <TableCell>{dechargement.poids_camion_decharge}</TableCell>
                 <TableCell>{dechargement.poids_camion_apres_chargement}</TableCell>
