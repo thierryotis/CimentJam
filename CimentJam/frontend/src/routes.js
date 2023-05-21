@@ -22,12 +22,11 @@ import ChargementPage from './pages/ChargementPage';
 import AjoutChargementPage from './pages/AjoutChargementPage';
 import DechargementPage from './pages/DechargementPage';
 import AjoutDechargementPage from './pages/AjoutDechargementPage';
-import AjoutUtilisateur from './component/AddUser'
-import { getCurrentUserRole } from './utils/User';
+
+// ----------------------------------------------------------------------
 
 export default function Router() {
-  const currentUserRole = getCurrentUserRole(); // Get the current user's role (e.g., from authentication context or state)
-
+  
   const routes = useRoutes([
     {
       path: '/dashboard',
@@ -36,6 +35,8 @@ export default function Router() {
         { element: <Navigate to="/dashboard/app" />, index: true },
         { path: 'app', element: <DashboardAppPage /> },
         { path: 'user', element: <UserPage /> },
+        { path: 'products', element: <ProductsPage /> },
+        { path: 'blog', element: <BlogPage /> },
         { path: 'proprio', element: <ProprioPage /> },
         { path: 'ajoutproprio', element: <AjoutProprioPage /> },
         { path: 'chauffeur', element: <ChauffeurPage /> },
@@ -47,25 +48,8 @@ export default function Router() {
         { path: 'chargement', element: <ChargementPage /> },
         { path: 'ajoutchargement', element: <AjoutChargementPage /> },
         { path: 'dechargement', element: <DechargementPage /> },
-        { path: 'ajoutdechargement', element: <AjoutDechargementPage /> },
-        { path: 'ajoututilisateur', element: <AjoutUtilisateur /> },
-      ].filter((route) => {
-        // Filter the routes based on the user's role
-        if (currentUserRole === 'admin') {
-          // Admin can access all routes
-          return true;
-        } else if (currentUserRole === 'secretaire') {
-          // Secretaire can access the following routes
-          return ['dashboard','produit', 'ajoutproduit','proprio', 'ajoutproprio', 'chauffeur', 'ajoutcamion', 'camion', 'ajoutchauffeur'].includes(route.path);
-        } else if (currentUserRole === 'chargeur') {
-          // Chargeur can access the following route
-          return ['dasboard', 'chargement', 'ajoutchargement'].includes(route.path);
-        } else if (currentUserRole === 'dechargeur') {
-          // Dechargeur can access the following route
-          return ['dashboard', 'dechargement', 'ajoutdechargement'].includes(route.path);
-        }
-        return false; // Default: deny access to all other routes
-      }),
+        { path: 'ajoutdechargement', element: <AjoutDechargementPage /> }
+      ],
     },
     {
       path: 'login',

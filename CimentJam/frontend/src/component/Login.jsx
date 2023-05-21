@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {  useNavigate } from "react-router-dom";
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -35,6 +36,7 @@ const defaultTheme = createTheme();
 export default function SignIn() {
   const [telephone, setTelephone] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -46,8 +48,12 @@ export default function SignIn() {
       });
       const { success, token } = response.data;
       if (success) {
+        console.log('saving token')
         // Save the token as a cookie
-        Cookie.set('token', token, { expires: 7 }); // Expires after 7 days
+        Cookie.set('jwt', token, { expires: 7 }); // Expires after 7 days
+        //navigate to dashboard
+        navigate("/dashboard/");
+        window.location.reload(true); 
       } else {
         // Handle login failure
         console.log("Can't connect")
