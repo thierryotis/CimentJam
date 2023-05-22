@@ -26,7 +26,6 @@ import AjoutDechargementPage from './pages/AjoutDechargementPage';
 // ----------------------------------------------------------------------
 
 export default function Router() {
-  const currentUserRole = getCurrentUserRole();
   const routes = useRoutes([
     {
       path: '/dashboard',
