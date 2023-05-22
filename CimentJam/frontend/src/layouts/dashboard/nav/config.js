@@ -10,42 +10,50 @@ const navConfig = [
     title: 'Tableau de bord',
     path: '/dashboard/app',
     icon: icon('ic_analytics'),
+    visibility:true
   },
   {
     title: 'Chargements',
     path: '/dashboard/chargement',
     icon: icon('ic_blog'),
+    visibility:true
   },
   {
     title: 'Dechargements',
     path: '/dashboard/dechargement',
     icon: icon('ic_blog'),
+    visibility:true
   },
   {
     title: 'Propriétaires',
     path: '/dashboard/proprio',
     icon: icon('ic_user'),
+    visibility:true
   },
   {
     title: 'Chauffeurs',
     path: '/dashboard/chauffeur',
     icon: icon('ic_user'),
+    visibility:true
   },
   {
     title: 'Camions',
     path: '/dashboard/camion',
     icon: icon('ic_user'),
+    visibility:true
   },
   {
     title: 'Produits',
     path: '/dashboard/produit',
     icon: icon('ic_user'),
+    visibility:true
   },
   
   {
     title: 'Deconnexion',
     path: '/logout',
     icon: icon('ic_lock'),
+    visibility:true
   },
 ];
 

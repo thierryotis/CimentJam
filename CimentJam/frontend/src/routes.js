@@ -1,14 +1,14 @@
 import { Navigate, useRoutes } from 'react-router-dom';
+import { useContext } from 'react';
+import { RoleContext } from './RoleContext'; // Import the RoleContext from App.js
 
 // layouts
 import DashboardLayout from './layouts/dashboard';
 import SimpleLayout from './layouts/simple';
 //
-import BlogPage from './pages/BlogPage';
 import UserPage from './pages/UserPage';
 import LoginPage from './pages/LoginPage';
 import Page404 from './pages/Page404';
-import ProductsPage from './pages/ProductsPage';
 import DashboardAppPage from './pages/DashboardAppPage';
 import ProprioPage from './pages/ProprioPage';
 import AjoutProprioPage from './pages/AjoutProprioPage';
@@ -23,31 +23,29 @@ import AjoutChargementPage from './pages/AjoutChargementPage';
 import DechargementPage from './pages/DechargementPage';
 import AjoutDechargementPage from './pages/AjoutDechargementPage';
 
-// ----------------------------------------------------------------------
-
 export default function Router() {
+  const userRole = useContext(RoleContext); // Access the userRole from the RoleContext
+
   const routes = useRoutes([
     {
       path: '/dashboard',
       element: <DashboardLayout />,
       children: [
         { element: <Navigate to="/dashboard/app" />, index: true },
-        { path: 'app', element: <DashboardAppPage /> },
-        { path: 'user', element: <UserPage /> },
-        { path: 'products', element: <ProductsPage /> },
-        { path: 'blog', element: <BlogPage /> },
-        { path: 'proprio', element: <ProprioPage /> },
-        { path: 'ajoutproprio', element: <AjoutProprioPage /> },
-        { path: 'chauffeur', element: <ChauffeurPage /> },
-        { path: 'ajoutchauffeur', element: <AjoutChauffeurPage /> },
-        { path: 'produit', element: <ProduitPage /> },
-        { path: 'ajoutproduit', element: <AjoutProduitPage /> },
-        { path: 'camion', element: <CamionPage /> },
-        { path: 'ajoutcamion', element: <AjoutCamionPage /> },
-        { path: 'chargement', element: <ChargementPage /> },
-        { path: 'ajoutchargement', element: <AjoutChargementPage /> },
-        { path: 'dechargement', element: <DechargementPage /> },
-        { path: 'ajoutdechargement', element: <AjoutDechargementPage /> }
+        { path: 'app', element:  (userRole === 'admin' || userRole === 'secretaire') ? <DashboardAppPage /> : <Navigate to="/404" /> },
+        { path: 'user', element: (userRole === 'admin' || userRole === 'secretaire') ? <UserPage /> : <Navigate to="/404" />},
+        { path: 'proprio', element: (userRole === 'admin' || userRole === 'secretaire') ?<ProprioPage />: <Navigate to="/404" /> },
+        { path: 'ajoutproprio', element: (userRole === 'admin' || userRole === 'secretaire') ? <AjoutProprioPage /> : <Navigate to="/404" /> },
+        { path: 'chauffeur', element: (userRole === 'admin' || userRole === 'secretaire') ? <ChauffeurPage /> : <Navigate to="/404" />},
+        { path: 'ajoutchauffeur', element: (userRole === 'admin' || userRole === 'secretaire') ? <AjoutChauffeurPage /> : <Navigate to="/404" /> },
+        { path: 'produit', element: (userRole === 'admin' || userRole === 'secretaire') ? <ProduitPage /> : <Navigate to="/404" />},
+        { path: 'ajoutproduit', element: (userRole === 'admin' || userRole === 'secretaire') ? <AjoutProduitPage /> : <Navigate to="/404" />},
+        { path: 'camion', element: (userRole === 'admin' || userRole === 'secretaire') ?<CamionPage />  : <Navigate to="/404" />},
+        { path: 'ajoutcamion', element:  (userRole === 'admin' || userRole === 'secretaire')?<AjoutCamionPage /> : <Navigate to="/404" />},
+        { path: 'chargement', element: userRole === 'chargeur'?<ChargementPage />: <Navigate to="/404" /> },
+        { path: 'ajoutchargement', element: (userRole === 'admin' || userRole === 'chargeur') ? <AjoutChargementPage /> : <Navigate to="/404" />},
+        { path: 'dechargement', element: (userRole === 'admin' || userRole === 'dechargeur') ? <DechargementPage /> : <Navigate to="/404" />},
+        { path: 'ajoutdechargement', element: (userRole === 'admin' || userRole === 'dechargeur') ? <AjoutDechargementPage /> : <Navigate to="/404" />}
       ],
     },
     {
