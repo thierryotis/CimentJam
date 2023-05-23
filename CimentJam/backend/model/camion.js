@@ -33,7 +33,6 @@ const getCamions = async () => {
     const query = "SELECT camions.*, proprios.nom AS proprio_nom FROM camions JOIN proprios ON camions.proprio_id = proprios.id";
     const [rows] = await connection.query(query);
     connection.end();
-    console.table(rows);
     return rows;
   } catch (error) {
     throw error;

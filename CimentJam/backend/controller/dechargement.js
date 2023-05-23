@@ -6,6 +6,7 @@ const { addDechargement, getDechargements, getDechargementById, updateDechargeme
 router.post("/adddechargement", async (req, res, next) => {
   try {
     const { numero_bordereau, numero_bon_commande, etat_camion, date, lieu_dechargement, poids_camion_decharge, poids_camion_apres_chargement, shift1, shift2, chargement_id } = req.body;
+    console.log(req.body)
     const dechargementId = await addDechargement(numero_bordereau, numero_bon_commande, etat_camion, date,lieu_dechargement, poids_camion_decharge, poids_camion_apres_chargement, shift1, shift2, chargement_id);
     res.status(201).json({
       success: true,

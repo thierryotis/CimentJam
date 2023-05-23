@@ -1,7 +1,7 @@
 const connectDatabase = require('../db/Database');
 
 // Add dechargement
-const addDechargement = async (numero_bordereau, numero_bon_commande, etat_camion, lieu_dechargement, poids_camion_decharge, poids_camion_apres_chargement, shift1, shift2, chargement_id) => {
+const addDechargement = async (numero_bordereau, numero_bon_commande, etat_camion, date, lieu_dechargement, poids_camion_decharge, poids_camion_apres_chargement, shift1, shift2, chargement_id) => {
   try {
     const connection = await connectDatabase();
     const query = "INSERT INTO dechargements (numero_bordereau, numero_bon_commande, etat_camion,date, lieu_dechargement, poids_camion_decharge, poids_camion_apres_chargement, shift1, shift2, chargement_id) VALUES (?, ?, ?,?, ?, ?, ?, ?, ?, ?)";
