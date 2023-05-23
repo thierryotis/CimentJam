@@ -1,4 +1,5 @@
-import * as React from 'react';
+import React, {useState} from 'react';
+import {  useNavigate } from "react-router-dom";
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,6 +13,9 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import axios from 'axios'
+import Cookie from 'js-cookie';
+import { serverUrl } from '../server';
 
 function Copyright(props) {
   return (
@@ -30,13 +34,47 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignIn() {
-  const handleSubmit = (event) => {
+  const [telephone, setTelephone] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+
+    try {
+      const response = await axios.post(`${serverUrl}/api/user/login`, {
+        telephone,
+        password,
+      });
+      const { success, token, role, nom } = response.data;
+      if (success) {
+        console.log('saving token')
+        // Save the token as a cookie
+        Cookie.set('jwt', token, { expires: 7 }); // Expires after 7 days
+        Cookie.set('role', role, { expires: 7 }); // Expires after 7 days
+        Cookie.set('nom', nom, { expires: 7 }); // Expires after 7 days
+        //navigate to dashboard
+        if(role == 'chargeur'){
+          navigate("/dashboard/chargement");
+        }else if(role == 'secretaire'){
+          navigate("/dashboard/camion");
+        }
+        else if(role == 'admin'){
+          navigate("/dashboard/app");
+        }
+        else if(role == 'dechargeur'){
+          navigate("/dashboard/dechargement");
+        }
+        
+        window.location.reload(true); 
+      } else {
+        // Handle login failure
+        console.log("Can't connect")
+      }
+    }
+    catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -62,10 +100,11 @@ export default function SignIn() {
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Adresse email"
-              name="email"
+              id="telephone"
+              label="Telephone"
+              name="telephone"
               autoComplete="email"
+              onChange={(e) => setTelephone(e.target.value)}
               autoFocus
             />
             <TextField
@@ -76,6 +115,7 @@ export default function SignIn() {
               label="Mot de passe"
               type="password"
               id="password"
+              onChange={(e) => setPassword(e.target.value)}
               autoComplete="current-password"
             />
             <FormControlLabel

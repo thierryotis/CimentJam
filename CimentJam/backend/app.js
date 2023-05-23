@@ -44,6 +44,7 @@ const camion = require("./controller/camion");
 const chauffeur = require("./controller/chauffeur");
 const chargement = require("./controller/chargement");
 const dechargement = require("./controller/dechargement");
+const user = require("./controller/user");
 
 
 
@@ -53,6 +54,7 @@ app.use("/api/camion", camion);
 app.use("/api/chauffeur", chauffeur);
 app.use("/api/chargement", chargement);
 app.use("/api/dechargement", dechargement);
+app.use("/api/user", user);
 
 
 
