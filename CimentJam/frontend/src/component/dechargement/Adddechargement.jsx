@@ -1,9 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { Button, TextField, Typography, Container } from '@mui/material';
+import React, { useState } from 'react';
+import {
+  Button,
+  TextField,
+  Typography,
+  Container,
+} from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { serverUrl } from '../../server';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const defaultTheme = createTheme();
 
@@ -11,13 +18,14 @@ const AddDechargement = () => {
   const [numeroBordereau, setNumeroBordereau] = useState('');
   const [numeroBonCommande, setNumeroBonCommande] = useState('');
   const [etatCamion, setEtatCamion] = useState('');
-  const [date, setDate] = useState('2023-05-20');
+  const [date, setDate] = useState('');
   const [lieuDechargement, setLieuDechargement] = useState('');
   const [poidsCamionDecharge, setPoidsCamionDecharge] = useState('');
   const [poidsCamionApresChargement, setPoidsCamionApresChargement] = useState('');
   const [shift1, setShift1] = useState('');
   const [shift2, setShift2] = useState('');
   const [chargementId, setChargementId] = useState('');
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -25,7 +33,7 @@ const AddDechargement = () => {
       numero_bordereau: numeroBordereau,
       numero_bon_commande: numeroBonCommande,
       etat_camion: etatCamion,
-      date : date,
+      date: date,
       lieu_dechargement: lieuDechargement,
       poids_camion_decharge: poidsCamionDecharge,
       poids_camion_apres_chargement: poidsCamionApresChargement,
@@ -39,21 +47,34 @@ const AddDechargement = () => {
       .then((response) => {
         console.log(response.data); // Server response
         toast.success('Dechargement added successfully');
-        setNumeroBordereau('');
-        setNumeroBonCommande('');
-        setEtatCamion('');
-        setDate('');
-        setLieuDechargement('');
-        setPoidsCamionDecharge('');
-        setPoidsCamionApresChargement('');
-        setShift1('');
-        setShift2('');
-        setChargementId('');
+        resetForm();
       })
       .catch((error) => {
         console.error(error);
-        toast.error(error);
+        toast.error('Failed to add dechargement');
       });
+  };
+
+  const resetForm = () => {
+    setNumeroBordereau('');
+    setNumeroBonCommande('');
+    setEtatCamion('');
+    setDate('');
+    setLieuDechargement('');
+    setPoidsCamionDecharge('');
+    setPoidsCamionApresChargement('');
+    setShift1('');
+    setShift2('');
+    setChargementId('');
+  };
+
+  const handleDatePickerClick = () => {
+    setShowDatePicker(true);
+  };
+
+  const handleDatePickerChange = (selectedDate) => {
+    setDate(selectedDate);
+    setShowDatePicker(false);
   };
 
   return (
@@ -94,6 +115,34 @@ const AddDechargement = () => {
             value={etatCamion}
             onChange={(e) => setEtatCamion(e.target.value)}
           />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="date"
+            label="Date"
+            id="date"
+            value={date}
+            InputProps={{
+              readOnly: true,
+            }}
+          />
+          <div className="wrapper">
+            {showDatePicker ? (
+              <DatePicker
+                selected={date}
+                showTimeSelect
+                timeFormat="HH:mm"
+                timeIntervals={15}
+                onChange={handleDatePickerChange}
+                inline
+              />
+            ) : (
+              <Button variant="contained" color="primary" onClick={handleDatePickerClick}>
+                Selectionner
+              </Button>
+            )}
+          </div>
           <TextField
             margin="normal"
             required
