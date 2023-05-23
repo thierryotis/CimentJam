@@ -43,6 +43,8 @@ router.post("/login", async (req, res, next) => {
         success: true,
         message: "Utilisateur connecté avec succès",
         token,
+        role:user.role, 
+        nom : user.nom
       });
     } catch (error) {
       return next(error);
