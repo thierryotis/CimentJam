@@ -42,8 +42,8 @@ export default function Router() {
         { path: 'ajoutproduit', element: (userRole === 'admin' || userRole === 'secretaire') ? <AjoutProduitPage /> : <Navigate to="/404" />},
         { path: 'camion', element: (userRole === 'admin' || userRole === 'secretaire') ?<CamionPage />  : <Navigate to="/404" />},
         { path: 'ajoutcamion', element:  (userRole === 'admin' || userRole === 'secretaire')?<AjoutCamionPage /> : <Navigate to="/404" />},
-        { path: 'chargement', element: userRole === 'chargeur'?<ChargementPage />: <Navigate to="/404" /> },
-        { path: 'ajoutchargement', element: (userRole === 'admin' || userRole === 'chargeur') ? <AjoutChargementPage /> : <Navigate to="/404" />},
+        { path: 'chargement', element: (userRole === 'admin' || userRole === 'chargeur')?<ChargementPage />: <Navigate to="/404" /> },
+        { path: 'ajoutchargement', element: (userRole === 'admin' || userRole === 'admin' || userRole === 'chargeur') ? <AjoutChargementPage /> : <Navigate to="/404" />},
         { path: 'dechargement', element: (userRole === 'admin' || userRole === 'dechargeur') ? <DechargementPage /> : <Navigate to="/404" />},
         { path: 'ajoutdechargement', element: (userRole === 'admin' || userRole === 'dechargeur') ? <AjoutDechargementPage /> : <Navigate to="/404" />}
       ],

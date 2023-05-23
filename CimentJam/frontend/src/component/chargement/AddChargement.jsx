@@ -7,6 +7,9 @@ import { serverUrl } from '../../server';
 import { getChauffeurs } from '../chauffeur/chauffeur';
 import { getCamions } from '../camion/camion';
 import { getProduits } from '../produit/produit';
+import DatePicker from 'react-datepicker';
+
+import 'react-datepicker/dist/react-datepicker.css';
 
 const defaultTheme = createTheme();
 
@@ -21,11 +24,12 @@ const AddChargement = () => {
   const [shift2, setShift2] = useState('');
   const [operateur, setOperateur] = useState('');
   const [chauffeurId, setChauffeurId] = useState('');
-  const [chauffeurOptions, setChauffeurOptions] = useState([]); 
+  const [chauffeurOptions, setChauffeurOptions] = useState([]);
   const [camionOptions, setCamionOptions] = useState([]);
   const [camionId, setCamionId] = useState('');
   const [typeProduitId, setTypeProduitId] = useState('');
   const [typeProduitOptions, setTypeProduitOptions] = useState([]);
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -104,9 +108,14 @@ const AddChargement = () => {
       });
   }, []);
 
+  const handleDatePickerClick = () => {
+    setShowDatePicker(true);
+  };
 
-
-
+  const handleDatePickerChange = (selectedDate) => {
+    setDate(selectedDate);
+    setShowDatePicker(false);
+  };
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -144,8 +153,27 @@ const AddChargement = () => {
             label="Date"
             id="date"
             value={date}
-            onChange={(e) => setDate(e.target.value)}
+            InputProps={{
+              readOnly: true,
+            }}
           />
+          <div className="wrapper">
+            {showDatePicker ? (
+              <DatePicker
+                selected={date}
+                showTimeSelect
+                timeFormat="HH:mm"
+                timeIntervals={15}
+                onChange={handleDatePickerChange}
+                placeholderText="Date"
+                inline
+              />
+            ) : (
+              <Button variant="contained" color="primary" onClick={handleDatePickerClick}>
+                Selectionner
+              </Button>
+            )}
+          </div>
           <TextField
             margin="normal"
             required

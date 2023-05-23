@@ -54,15 +54,15 @@ export default function SignIn() {
         Cookie.set('role', role, { expires: 7 }); // Expires after 7 days
         Cookie.set('nom', nom, { expires: 7 }); // Expires after 7 days
         //navigate to dashboard
-        if(role == 'chargeur'){
+        if(role === 'chargeur'){
           navigate("/dashboard/chargement");
-        }else if(role == 'secretaire'){
+        }else if(role === 'secretaire'){
           navigate("/dashboard/camion");
         }
-        else if(role == 'admin'){
+        else if(role === 'admin'){
           navigate("/dashboard/app");
         }
-        else if(role == 'dechargeur'){
+        else if(role === 'dechargeur'){
           navigate("/dashboard/dechargement");
         }
         
