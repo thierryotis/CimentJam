@@ -1,16 +1,15 @@
-import React, { useState } from 'react';
-import {
-  Button,
-  TextField,
-  Typography,
-  Container,
-} from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import {  Button,  TextField,  Typography,  Container,InputLabel, Select, MenuItem} from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { serverUrl } from '../../server';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+
+
+import Cookies from 'js-cookie';
+
 
 const defaultTheme = createTheme();
 
@@ -19,13 +18,13 @@ const AddDechargement = () => {
   const [numeroBonCommande, setNumeroBonCommande] = useState('');
   const [etatCamion, setEtatCamion] = useState('');
   const [date, setDate] = useState('');
-  const [lieuDechargement, setLieuDechargement] = useState('');
+  const [lieuDechargement, setLieuDechargement] = useState('Nomayos');
   const [poidsCamionDecharge, setPoidsCamionDecharge] = useState('');
   const [poidsCamionApresChargement, setPoidsCamionApresChargement] = useState('');
-  const [shift1, setShift1] = useState('');
-  const [shift2, setShift2] = useState('');
+
   const [chargementId, setChargementId] = useState('');
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [chargements, setChargements] = useState([])
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -37,16 +36,22 @@ const AddDechargement = () => {
       lieu_dechargement: lieuDechargement,
       poids_camion_decharge: poidsCamionDecharge,
       poids_camion_apres_chargement: poidsCamionApresChargement,
-      shift1: shift1,
-      shift2: shift2,
       chargement_id: chargementId,
     };
+    const token = Cookies.get('jwt')
 
+    const getChargementId = ()=>{
+
+    }
     axios
-      .post(`${serverUrl}/api/dechargement/adddechargement`, data)
+      .post(`${serverUrl}/api/dechargement/adddechargement`,data,{
+        headers: {
+          Authorization: `Bearer ${token}` // Ajoute le token dans l'en-tête Authorization de la requête
+        }
+      })
       .then((response) => {
         console.log(response.data); // Server response
-        toast.success('Dechargement added successfully');
+        toast.success('Dechargement ajouté avec succès');
         resetForm();
       })
       .catch((error) => {
@@ -54,6 +59,20 @@ const AddDechargement = () => {
         toast.error('Failed to add dechargement');
       });
   };
+
+  useEffect(()=>{
+    const token = Cookies.get('jwt')
+    axios.get(`${serverUrl}/api/chargement/getchargements`, {
+      headers: {
+        Authorization: `Bearer ${token}` // Ajoute le token dans l'en-tête Authorization de la requête
+      }
+    })
+      .then(response => setChargements(response.data.chargements))
+      .catch(error => {
+        console.error(error);
+        throw error;
+      });
+  }, [])
 
   const resetForm = () => {
     setNumeroBordereau('');
@@ -63,8 +82,6 @@ const AddDechargement = () => {
     setLieuDechargement('');
     setPoidsCamionDecharge('');
     setPoidsCamionApresChargement('');
-    setShift1('');
-    setShift2('');
     setChargementId('');
   };
 
@@ -81,20 +98,28 @@ const AddDechargement = () => {
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
         <Typography component="h1" variant="h5">
-          Ajouter Dechargement
+          Ajout Déchargement
         </Typography>
         <form onSubmit={handleSubmit}>
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            id="numero_bordereau"
-            label="Numero Bordereau"
-            name="numero_bordereau"
-            autoFocus
+          
+          <InputLabel id="proprioId-label">Bordereau chargement</InputLabel>
+          <Select
+            labelId="bordereauId-label"
+            id="bordereauId"
             value={numeroBordereau}
-            onChange={(e) => setNumeroBordereau(e.target.value)}
-          />
+            onChange={(e) => {setNumeroBordereau(e.target.value);
+                const result = chargements.find(obj => obj.numero_bordereau === e.target.value);
+                setChargementId(result.id)
+              }
+            }
+            fullWidth
+          >
+            {chargements.map((c) => (
+              <MenuItem key={c.id} value={c.numero_bordereau}>
+                {c.numero_bordereau}
+              </MenuItem>
+            ))}
+          </Select>
           <TextField
             margin="normal"
             required
@@ -172,36 +197,6 @@ const AddDechargement = () => {
             id="poids_camion_apres_chargement"
             value={poidsCamionApresChargement}
             onChange={(e) => setPoidsCamionApresChargement(e.target.value)}
-          />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="shift1"
-            label="Shift 1"
-            id="shift1"
-            value={shift1}
-            onChange={(e) => setShift1(e.target.value)}
-          />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="shift2"
-            label="Shift 2"
-            id="shift2"
-            value={shift2}
-            onChange={(e) => setShift2(e.target.value)}
-          />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="chargement_id"
-            label="Chargement ID"
-            id="chargement_id"
-            value={chargementId}
-            onChange={(e) => setChargementId(e.target.value)}
           />
           <Button type="submit" fullWidth variant="contained" color="primary">
             Ajouter

@@ -4,6 +4,7 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import Modal from 'react-modal';
+import Cookie from 'js-cookie';
 
 import { serverUrl } from '../../server';
 import { toast } from "react-toastify";
@@ -63,7 +64,12 @@ export default function GetChauffeurs() {
 
 
   useEffect(() => {
-    axios.get(`${serverUrl}/api/chauffeur/getchauffeurs`) // Assuming the server is running on the same host
+    const token = Cookie.get('jwt');
+    axios.get(`${serverUrl}/api/chauffeur/getchauffeurs`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      withCredentials: true}) // Assuming the server is running on the same host
       .then(response => {
         setChauffeurs(response.data.chauffeurs);
       })

@@ -22,6 +22,8 @@ import ChargementPage from './pages/ChargementPage';
 import AjoutChargementPage from './pages/AjoutChargementPage';
 import DechargementPage from './pages/DechargementPage';
 import AjoutDechargementPage from './pages/AjoutDechargementPage';
+import AjoutUtilisateur from './component/AddUser';
+import GetUsers from './component/user/GetUsers';
 
 export default function Router() {
   const userRole = useContext(RoleContext); // Access the userRole from the RoleContext
@@ -29,7 +31,7 @@ export default function Router() {
   const routes = useRoutes([
     {
       path: '/dashboard',
-      element: <DashboardLayout />,
+      element: userRole ? <DashboardLayout /> : <Navigate to="/login" />,
       children: [
         { element: <Navigate to="/dashboard/app" />, index: true },
         { path: 'app', element:  (userRole === 'admin' || userRole === 'secretaire') ? <DashboardAppPage /> : <Navigate to="/404" /> },
@@ -45,7 +47,9 @@ export default function Router() {
         { path: 'chargement', element: (userRole === 'admin' || userRole === 'chargeur')?<ChargementPage />: <Navigate to="/404" /> },
         { path: 'ajoutchargement', element: (userRole === 'admin' || userRole === 'admin' || userRole === 'chargeur') ? <AjoutChargementPage /> : <Navigate to="/404" />},
         { path: 'dechargement', element: (userRole === 'admin' || userRole === 'dechargeur') ? <DechargementPage /> : <Navigate to="/404" />},
-        { path: 'ajoutdechargement', element: (userRole === 'admin' || userRole === 'dechargeur') ? <AjoutDechargementPage /> : <Navigate to="/404" />}
+        { path: 'ajoutdechargement', element: (userRole === 'admin' || userRole === 'dechargeur') ? <AjoutDechargementPage /> : <Navigate to="/404" />},
+        { path: 'ajoututilisateur', element: userRole === 'admin' ? <AjoutUtilisateur /> : <Navigate to="/404" />},
+        { path: 'utilisateur', element: userRole === 'admin' ? <GetUsers /> : <Navigate to="/404" />}
       ],
     },
     {

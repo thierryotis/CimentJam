@@ -1,9 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const { addChauffeur, getChauffeurs, getChauffeurById, updateChauffeur, deleteChauffeur } = require("../model/chauffeur");
+const {isAuthenticated} = require('../middleware/auth')
+const {canSecretaire} = require('../middleware/abilities')
 
 // Add chauffeur
-router.post("/addchauffeur", async (req, res, next) => {
+router.post("/addchauffeur",isAuthenticated, async (req, res, next) => {
   try {
     const { nom, phone, cni } = req.body;
     const chauffeurId = await addChauffeur(nom, phone, cni);
@@ -18,7 +20,7 @@ router.post("/addchauffeur", async (req, res, next) => {
 });
 
 // Get all chauffeurs
-router.get("/getchauffeurs", async (req, res, next) => {
+router.get("/getchauffeurs", isAuthenticated,  async (req, res, next) => {
   try {
     const chauffeurs = await getChauffeurs();
     res.status(200).json({
@@ -31,7 +33,7 @@ router.get("/getchauffeurs", async (req, res, next) => {
 });
 
 // Get a chauffeur by ID
-router.get("/getchauffeur/:id", async (req, res, next) => {
+router.get("/getchauffeur/:id",isAuthenticated,  async (req, res, next) => {
   try {
     const { id } = req.params;
     const chauffeur = await getChauffeurById(id);
@@ -52,7 +54,7 @@ router.get("/getchauffeur/:id", async (req, res, next) => {
 });
 
 // Update chauffeur
-router.put("/updatechauffeur/:id", async (req, res, next) => {
+router.put("/updatechauffeur/:id", isAuthenticated, async (req, res, next) => {
   try {
     const { id } = req.params;
     const { nom, phone, cni } = req.body;
@@ -74,7 +76,7 @@ router.put("/updatechauffeur/:id", async (req, res, next) => {
 });
 
 // Delete chauffeur
-router.delete("/deletechauffeur/:id", async (req, res, next) => {
+router.delete("/deletechauffeur/:id",isAuthenticated, async (req, res, next) => {
   try {
     const { id } = req.params;
     const deleted = await deleteChauffeur(id);

@@ -8,6 +8,7 @@ import { getChauffeurs } from '../chauffeur/chauffeur';
 import { getCamions } from '../camion/camion';
 import { getProduits } from '../produit/produit';
 import DatePicker from 'react-datepicker';
+import Cookies from 'js-cookie';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -20,8 +21,6 @@ const AddChargement = () => {
   const [lieu, setLieu] = useState('');
   const [poidsCamionCharge, setPoidsCamionCharge] = useState('');
   const [poidsCamionVide, setPoidsCamionVide] = useState('');
-  const [shift1, setShift1] = useState('');
-  const [shift2, setShift2] = useState('');
   const [operateur, setOperateur] = useState('');
   const [chauffeurId, setChauffeurId] = useState('');
   const [chauffeurOptions, setChauffeurOptions] = useState([]);
@@ -30,6 +29,7 @@ const AddChargement = () => {
   const [typeProduitId, setTypeProduitId] = useState('');
   const [typeProduitOptions, setTypeProduitOptions] = useState([]);
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const lieux = ['Kribi', 'Foumban']
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -40,16 +40,18 @@ const AddChargement = () => {
       lieu: lieu,
       poids_camion_charge: poidsCamionCharge,
       poids_camion_vide: poidsCamionVide,
-      shift1: shift1,
-      shift2: shift2,
       operateur: operateur,
       chauffeur_id: chauffeurId,
       camion_id: camionId,
       type_produit_id: typeProduitId,
     };
-
+    const token = Cookies.get('jwt')
     axios
-      .post(`${serverUrl}/api/chargement/addchargement`, data)
+      .post(`${serverUrl}/api/chargement/addchargement`, data, {
+        headers: {
+          Authorization: `Bearer ${token}` // Ajoute le token dans l'en-tête Authorization de la requête
+        }
+      })
       .then((response) => {
         console.log(response.data); // Server response
         toast.success('Chargement added successfully');
@@ -59,8 +61,6 @@ const AddChargement = () => {
         setLieu('');
         setPoidsCamionCharge('');
         setPoidsCamionVide('');
-        setShift1('');
-        setShift2('');
         setOperateur('');
         setChauffeurId('');
         setCamionId('');
@@ -174,16 +174,20 @@ const AddChargement = () => {
               </Button>
             )}
           </div>
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="lieu"
-            label="Lieu"
-            id="lieu"
-            value={lieu}
-            onChange={(e) => setLieu(e.target.value)}
-          />
+          <InputLabel id="lieuId-label">Lieu</InputLabel>
+            <Select
+              labelId="LieuId-label"
+              id="lieuId"
+              value={lieu}
+              onChange={(e) => setLieu(e.target.value)}
+              fullWidth
+            >
+              {lieux.map((r) => (
+                <MenuItem key={r} value={r}>
+                  {r}
+                </MenuItem>
+              ))}
+            </Select>
           <TextField
             margin="normal"
             required
@@ -203,26 +207,6 @@ const AddChargement = () => {
             id="poids_camion_vide"
             value={poidsCamionVide}
             onChange={(e) => setPoidsCamionVide(e.target.value)}
-          />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="shift1"
-            label="Shift 1"
-            id="shift1"
-            value={shift1}
-            onChange={(e) => setShift1(e.target.value)}
-          />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="shift2"
-            label="Shift 2"
-            id="shift2"
-            value={shift2}
-            onChange={(e) => setShift2(e.target.value)}
           />
           <TextField
             margin="normal"

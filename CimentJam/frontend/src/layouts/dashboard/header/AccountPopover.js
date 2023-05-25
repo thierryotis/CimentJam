@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import {  useNavigate } from "react-router-dom";
 // @mui
 import { alpha } from '@mui/material/styles';
 import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton, Popover } from '@mui/material';
@@ -18,6 +19,7 @@ const MENU_OPTIONS = [
 // ----------------------------------------------------------------------
 
 export default function AccountPopover() {
+  const navigate = useNavigate();
   const [nom, setNom] = useState('')
   useEffect(()=>{
     const n = Cookies.get('nom')
@@ -36,8 +38,11 @@ export default function AccountPopover() {
   const handleLogout = ()=>{
     setOpen(null);
     const token = Cookies.get('jwt');
-    Cookies.set('jwt', '')
-    Cookies.set('nom', '')
+    Cookies.remove('jwt')
+    Cookies.remove('nom')
+    Cookies.remove('role')
+    navigate("/login");
+    window.location.reload(true); 
 
   }
 

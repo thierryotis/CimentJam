@@ -1,11 +1,11 @@
 const connectDatabase = require('../db/Database');
 
 // Add chargement
-const addChargement = async (numero_bordereau, numero_bon_commande, date, lieu, poids_camion_charge, poids_camion_vide, shift1, shift2, operateur, chauffeur_id, camion_id, type_produit_id) => {
+const addChargement = async (numero_bordereau, numero_bon_commande, date, lieu, poids_camion_charge, poids_camion_vide,  operateur, chauffeur_id, camion_id, type_produit_id) => {
   try {
     const connection = await connectDatabase();
-    const query = "INSERT INTO chargements (numero_bordereau, numero_bon_commande, date, lieu, poids_camion_charge, poids_camion_vide, shift1, shift2, operateur, chauffeur_id, camion_id, type_produit_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    const [result] = await connection.query(query, [numero_bordereau, numero_bon_commande, date, lieu, poids_camion_charge, poids_camion_vide, shift1, shift2, operateur, chauffeur_id, camion_id, type_produit_id]);
+    const query = "INSERT INTO chargements (numero_bordereau, numero_bon_commande, date, lieu, poids_camion_charge, poids_camion_vide,  operateur, chauffeur_id, camion_id, type_produit_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    const [result] = await connection.query(query, [numero_bordereau, numero_bon_commande, date, lieu, poids_camion_charge, poids_camion_vide,  operateur, chauffeur_id, camion_id, type_produit_id]);
     connection.end(); // Close the connection after query execution
     return result.insertId;
   } catch (error) {
@@ -47,11 +47,11 @@ const getChargements = async () => {
 
 
 // Update chargement
-const updateChargement = async (id, numero_bordereau, numero_bon_commande, date, lieu, poids_camion_charge, poids_camion_vide, shift1, shift2, operateur, chauffeur_id, camion_id, type_produit_id) => {
+const updateChargement = async (id, numero_bordereau, numero_bon_commande, date, lieu, poids_camion_charge, poids_camion_vide,  operateur, chauffeur_id, camion_id, type_produit_id) => {
   try {
     const connection = await connectDatabase();
-    const query = "UPDATE chargements SET numero_bordereau = ?, numero_bon_commande = ?, date = ?, lieu = ?, poids_camion_charge = ?, poids_camion_vide = ?, shift1 = ?, shift2 = ?, operateur = ?, chauffeur_id = ?, camion_id = ?, type_produit_id = ? WHERE id = ?";
-    const [result] = await connection.query(query, [numero_bordereau, numero_bon_commande, date, lieu, poids_camion_charge, poids_camion_vide, shift1, shift2, operateur, chauffeur_id, camion_id, type_produit_id, id]);
+    const query = "UPDATE chargements SET numero_bordereau = ?, numero_bon_commande = ?, date = ?, lieu = ?, poids_camion_charge = ?, poids_camion_vide = ?,  operateur = ?, chauffeur_id = ?, camion_id = ?, type_produit_id = ? WHERE id = ?";
+    const [result] = await connection.query(query, [numero_bordereau, numero_bon_commande, date, lieu, poids_camion_charge, poids_camion_vide,  operateur, chauffeur_id, camion_id, type_produit_id, id]);
     connection.end();
     return result.affectedRows > 0;
   } catch (error) {

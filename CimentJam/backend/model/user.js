@@ -17,6 +17,19 @@ const addUser = async (nom, telephone, password, role) => {
   }
 };
 
+
+// Get users
+const getUsers = async () => {
+  try {
+  const connection = await connectDatabase();
+  const query = "SELECT * FROM users";
+  const [rows] = await connection.query(query);
+  connection.end();
+  return rows;
+  } catch (error) {
+  throw error;
+  }
+};
 // User login
 const login = async (telephone, password) => {
     try {
@@ -46,7 +59,19 @@ const login = async (telephone, password) => {
       throw error;
     }
   };
-  
+
+// Delete user
+const deleteUser = async (userId) => {
+  try {
+  const connection = await connectDatabase();
+  const query = "DELETE FROM users WHERE id = ?";
+  const [result] = await connection.query(query, [userId]);
+  connection.end();
+  return result.affectedRows > 0;
+  } catch (error) {
+  throw error;
+  }
+};
 
 // User logout
 const logout = () => {
@@ -70,7 +95,9 @@ const updatePassword = async (id, newPassword) => {
 
 module.exports = {
   addUser,
+  getUsers,
   login,
+  deleteUser,
   logout,
   updatePassword,
 };

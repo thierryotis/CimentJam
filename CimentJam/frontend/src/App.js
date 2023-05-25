@@ -9,6 +9,9 @@ import { StyledChart } from './component/chart';
 import ScrollToTop from './component/scroll-to-top';
 import { RoleContextProvider } from './RoleContext'; 
 
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 // ----------------------------------------------------------------------
 
 export default function App() {
@@ -22,6 +25,18 @@ export default function App() {
             <Router />
           </RoleContextProvider>
         </ThemeProvider>
+        <ToastContainer
+        position="bottom-center"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
       </BrowserRouter>
     </HelmetProvider>
   );

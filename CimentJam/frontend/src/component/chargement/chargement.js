@@ -1,8 +1,15 @@
 import axios from 'axios';
 import { serverUrl } from '../../server';
+import Cookies from 'js-cookie';
+
+var token = Cookies.get('jwt')
 
 export function getChargement(id) {
-  return axios.get(`${serverUrl}/api/chargement/getchargement/${id}`)
+  return axios.get(`${serverUrl}/api/chargement/getchargement/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}` // Ajoute le token dans l'en-tête Authorization de la requête
+    }
+  })
     .then(response => response.data)
     .catch(error => {
       console.error(error);
@@ -11,7 +18,11 @@ export function getChargement(id) {
 }
 
 export function getChargements() {
-  return axios.get(`${serverUrl}/api/chargement/getchargements`)
+  return axios.get(`${serverUrl}/api/chargement/getchargements`, {
+    headers: {
+      Authorization: `Bearer ${token}` // Ajoute le token dans l'en-tête Authorization de la requête
+    }
+  })
     .then(response => response.data.chargements)
     .catch(error => {
       console.error(error);
@@ -20,7 +31,11 @@ export function getChargements() {
 }
 
 export function updateChargement(id, data) {
-  return axios.put(`${serverUrl}/api/chargement/updatechargement/${id}`, data)
+  return axios.put(`${serverUrl}/api/chargement/updatechargement/${id}`, data, {
+    headers: {
+      Authorization: `Bearer ${token}` // Ajoute le token dans l'en-tête Authorization de la requête
+    }
+  })
     .then(response => response.data)
     .catch(error => {
       console.error(error);
@@ -29,7 +44,11 @@ export function updateChargement(id, data) {
 }
 
 export function deleteChargement(id) {
-  return axios.delete(`${serverUrl}/api/chargement/deletechargement/${id}`)
+  return axios.delete(`${serverUrl}/api/chargement/deletechargement/${id}`,{
+    headers: {
+      Authorization: `Bearer ${token}` // Ajoute le token dans l'en-tête Authorization de la requête
+    }
+  })
     .then(response => response.data)
     .catch(error => {
       console.error(error);

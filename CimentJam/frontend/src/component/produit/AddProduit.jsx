@@ -22,7 +22,7 @@ const AddProduit = () => {
       .post(`${serverUrl}/api/produit/addproduit`, data)
       .then((response) => {
         console.log(response.data); // Server response
-        toast.success('Produit added successfully');
+        toast.success('Produit ajouté avec succès');
         setNom('');
         setType('');
       })
@@ -36,7 +36,7 @@ const AddProduit = () => {
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
         <Typography component="h1" variant="h5">
-          Add Produit
+          Ajouter un produit
         </Typography>
         <form onSubmit={handleSubmit}>
           <TextField
@@ -61,7 +61,7 @@ const AddProduit = () => {
             onChange={(e) => setType(e.target.value)}
           />
           <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-            Add
+            Ajouter
           </Button>
         </form>
       </Container>

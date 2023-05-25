@@ -1,13 +1,17 @@
 const express = require("express");
 const router = express.Router();
 const { addDechargement, getDechargements, getDechargementById, updateDechargement, deleteDechargement } = require("../model/dechargement");
+const {canDechargement} = require('../middleware/abilities')
+const {isAuthenticated} = require('../middleware/auth')
+
+
 
 // Add dechargement
-router.post("/adddechargement", async (req, res, next) => {
+router.post("/adddechargement",isAuthenticated, canDechargement,  async (req, res, next) => {
   try {
-    const { numero_bordereau, numero_bon_commande, etat_camion, date, lieu_dechargement, poids_camion_decharge, poids_camion_apres_chargement, shift1, shift2, chargement_id } = req.body;
+    const { numero_bordereau, numero_bon_commande, etat_camion, date, lieu_dechargement, poids_camion_decharge, poids_camion_apres_chargement,  chargement_id } = req.body;
     console.log(req.body)
-    const dechargementId = await addDechargement(numero_bordereau, numero_bon_commande, etat_camion, date,lieu_dechargement, poids_camion_decharge, poids_camion_apres_chargement, shift1, shift2, chargement_id);
+    const dechargementId = await addDechargement(numero_bordereau, numero_bon_commande, etat_camion, date,lieu_dechargement, poids_camion_decharge, poids_camion_apres_chargement,  chargement_id);
     res.status(201).json({
       success: true,
       message: "Déchargement ajouté avec succès",
@@ -19,7 +23,7 @@ router.post("/adddechargement", async (req, res, next) => {
 });
 
 // Get all dechargements
-router.get("/getdechargements", async (req, res, next) => {
+router.get("/getdechargements", isAuthenticated, async (req, res, next) => {
   try {
     const dechargements = await getDechargements();
     res.status(200).json({
@@ -53,11 +57,11 @@ router.get("/getdechargement/:id", async (req, res, next) => {
 });
 
 // Update dechargement
-router.put("/updatedechargement/:id", async (req, res, next) => {
+router.put("/updatedechargement/:id",  async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { numero_bordereau, numero_bon_commande, etat_camion,date, lieu_dechargement, poids_camion_decharge, poids_camion_apres_chargement, shift1, shift2, chargement_id } = req.body;
-    const updated = await updateDechargement(id, numero_bordereau, numero_bon_commande, etat_camion,date, lieu_dechargement, poids_camion_decharge, poids_camion_apres_chargement, shift1, shift2, chargement_id);
+    const { numero_bordereau, numero_bon_commande, etat_camion,date, lieu_dechargement, poids_camion_decharge, poids_camion_apres_chargement,  chargement_id } = req.body;
+    const updated = await updateDechargement(id, numero_bordereau, numero_bon_commande, etat_camion,date, lieu_dechargement, poids_camion_decharge, poids_camion_apres_chargement,  chargement_id);
     if (updated) {
       res.status(200).json({
         success: true,
@@ -75,7 +79,7 @@ router.put("/updatedechargement/:id", async (req, res, next) => {
 });
 
 // Delete dechargement
-router.delete("/deletedechargement/:id", async (req, res, next) => {
+router.delete("/deletedechargement/:id",isAuthenticated, canDechargement, async (req, res, next) => {
   try {
     const { id } = req.params;
     const deleted = await deleteDechargement(id);

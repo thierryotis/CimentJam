@@ -6,6 +6,10 @@ import EditIcon from '@mui/icons-material/Edit';
 import Modal from 'react-modal';
 import { toast } from 'react-toastify';
 import { serverUrl } from '../../server';
+import Cookies from 'js-cookie';
+
+
+
 
 const modalStyles = {
   content: {
@@ -32,14 +36,22 @@ const GetDechargements = () => {
   };
 
   const deleteDechargement = (id) => {
+    const token = Cookies.get('jwt')
     axios
-      .delete(`${serverUrl}/api/dechargement/deletedechargement/${id}`)
+      .delete(`${serverUrl}/api/dechargement/deletedechargement/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}` // Ajoute le token dans l'en-tête Authorization de la requête
+        }
+      })
       .then((response) => {
         if (response.data.success) {
-          toast.success('Dechargement deleted successfully');
+          const token = Cookies.get('jwt')
+          toast.success('Dechargement supprimé avec success');
           // Refresh the list of dechargements after deletion
           axios
-            .get(`${serverUrl}/api/dechargement/getdechargements`)
+            .get(`${serverUrl}/api/dechargement/getdechargements`, {headers: {
+              Authorization: `Bearer ${token}` // Ajoute le token dans l'en-tête Authorization de la requête
+            }})
             .then((response) => {
               setDechargements(response.data.dechargements);
             })
@@ -63,8 +75,13 @@ const GetDechargements = () => {
   };
 
   useEffect(() => {
+    const token = Cookies.get('jwt')
     axios
-      .get(`${serverUrl}/api/dechargement/getdechargements`) // Assuming the server is running on the same host
+      .get(`${serverUrl}/api/dechargement/getdechargements`,{
+        headers: {
+          Authorization: `Bearer ${token}` // Ajoute le token dans l'en-tête Authorization de la requête
+        }
+      }) // Assuming the server is running on the same host
       .then((response) => {
         setDechargements(response.data.dechargements);
       })
@@ -86,8 +103,6 @@ const GetDechargements = () => {
               <TableCell>Lieu </TableCell>
               <TableCell>Poids Camion Decharge</TableCell>
               <TableCell>Poids Camion Apres Chargement</TableCell>
-              <TableCell>Shift 1</TableCell>
-              <TableCell>Shift 2</TableCell>
               <TableCell>Chargement ID</TableCell>
               <TableCell>Actions</TableCell>
             </TableRow>
@@ -102,8 +117,6 @@ const GetDechargements = () => {
                 <TableCell>{dechargement.lieu_dechargement}</TableCell>
                 <TableCell>{dechargement.poids_camion_decharge}</TableCell>
                 <TableCell>{dechargement.poids_camion_apres_chargement}</TableCell>
-                <TableCell>{dechargement.shift1}</TableCell>
-                <TableCell>{dechargement.shift2}</TableCell>
                 <TableCell>{dechargement.chargement_id}</TableCell>
                 <TableCell>
                   <Button onClick={() => openModal(dechargement)}>

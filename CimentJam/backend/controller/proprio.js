@@ -1,9 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const { addProprio, getProprios, getProprio, updateProprio, deleteProprio } = require("../model/proprio");
+const {canSecretaire} = require('../middleware/abilities');
+const { isAuthenticated } = require("../middleware/auth");
 
 // Add proprio
-router.post("/addproprio", async (req, res, next) => {
+router.post("/addproprio",isAuthenticated, canSecretaire, async (req, res, next) => {
   try {
     const { nom, cni, phone } = req.body;
     const proprioId = await addProprio(nom, cni, phone);

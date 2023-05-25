@@ -1,9 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const { addCamion, getCamions, getCamionById, updateCamion, deleteCamion } = require("../model/camion");
+const {isAuthenticated} = require('../middleware/auth')
+const {canSecretaire} = require('../middleware/abilities')
 
 // Add camion
-router.post("/addcamion", async (req, res, next) => {
+router.post("/addcamion",isAuthenticated, canSecretaire, async (req, res, next) => {
   try {
     const { immatriculation, numero_benne, poids_vide, etat, mise_en_circulation, proprio_id } = req.body;
     const camionId = await addCamion(immatriculation, numero_benne, poids_vide, etat, mise_en_circulation, proprio_id);
@@ -18,7 +20,7 @@ router.post("/addcamion", async (req, res, next) => {
 });
 
 // Get all camions
-router.get("/getcamions", async (req, res, next) => {
+router.get("/getcamions", isAuthenticated,  async (req, res, next) => {
   try {
     const camions = await getCamions();
     res.status(200).json({
@@ -31,7 +33,7 @@ router.get("/getcamions", async (req, res, next) => {
 });
 
 // Get a camion by ID
-router.get("/getcamion/:id", async (req, res, next) => {
+router.get("/getcamion/:id", isAuthenticated, async (req, res, next) => {
   try {
     const { id } = req.params;
     const camion = await getCamionById(id);
@@ -52,7 +54,7 @@ router.get("/getcamion/:id", async (req, res, next) => {
 });
 
 // Update camion
-router.put("/updatecamion/:id", async (req, res, next) => {
+router.put("/updatecamion/:id",isAuthenticated,canSecretaire, async (req, res, next) => {
   try {
     const { id } = req.params;
     const { immatriculation, numero_benne, poids_vide, etat, mise_en_circulation, proprio_id } = req.body;
@@ -74,7 +76,7 @@ router.put("/updatecamion/:id", async (req, res, next) => {
 });
 
 // Delete camion
-router.delete("/deletecamion/:id", async (req, res, next) => {
+router.delete("/deletecamion/:id",isAuthenticated, async (req, res, next) => {
   try {
     const { id } = req.params;
     const deleted = await deleteCamion(id);

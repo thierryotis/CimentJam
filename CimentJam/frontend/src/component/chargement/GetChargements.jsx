@@ -6,6 +6,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import Modal from 'react-modal';
 import { toast } from 'react-toastify';
 import { serverUrl } from '../../server';
+import Cookies from 'js-cookie'
 
 const modalStyles = {
   content: {
@@ -32,14 +33,24 @@ const GetChargements = () => {
   };
 
   const deleteChargement = (id) => {
+    const token = Cookies.get('jwt')
     axios
-      .delete(`${serverUrl}/api/chargement/deletechargement/${id}`)
+      .delete(`${serverUrl}/api/chargement/deletechargement/${id}`,{
+        headers: {
+          Authorization: `Bearer ${token}` // Ajoute le token dans l'en-tête Authorization de la requête
+        }
+      })
       .then((response) => {
         if (response.data.success) {
           toast.success('Chargement deleted successfully');
           // Refresh the list of chargements after deletion
+          const token = Cookies.get('jwt')
           axios
-            .get(`${serverUrl}/api/chargement/getchargements`)
+            .get(`${serverUrl}/api/chargement/getchargements`,{
+              headers: {
+                Authorization: `Bearer ${token}` // Ajoute le token dans l'en-tête Authorization de la requête
+              }
+            })
             .then((response) => {
               setChargements(response.data.chargements);
             })
@@ -67,8 +78,13 @@ const GetChargements = () => {
   };
 
   useEffect(() => {
+    const token = Cookies.get('jwt')
     axios
-      .get(`${serverUrl}/api/chargement/getchargements`) // Assuming the server is running on the same host
+      .get(`${serverUrl}/api/chargement/getchargements`,{
+        headers: {
+          Authorization: `Bearer ${token}` // Ajoute le token dans l'en-tête Authorization de la requête
+        }
+      }) // Assuming the server is running on the same host
       .then((response) => {
         setChargements(response.data.chargements);
       })
@@ -83,18 +99,16 @@ const GetChargements = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Numero Bordereau</TableCell>
-              <TableCell>Numero Bon Commande</TableCell>
+              <TableCell>N° Bordereau</TableCell>
+              <TableCell>N° Bon Commande</TableCell>
               <TableCell>Date</TableCell>
               <TableCell>Lieu</TableCell>
-              <TableCell>Poids Camion Charge</TableCell>
+              <TableCell>Poids Camion Chargé</TableCell>
               <TableCell>Poids Camion Vide</TableCell>
-              <TableCell>Shift 1</TableCell>
-              <TableCell>Shift 2</TableCell>
               <TableCell>Operateur</TableCell>
-              <TableCell>Chauffeur ID</TableCell>
-              <TableCell>Camion ID</TableCell>
-              <TableCell>Type Produit ID</TableCell>
+              <TableCell>Chauffeur</TableCell>
+              <TableCell>Camion</TableCell>
+              <TableCell>Produit</TableCell>
               <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
@@ -107,8 +121,6 @@ const GetChargements = () => {
                 <TableCell>{chargement.lieu}</TableCell>
                 <TableCell>{chargement.poids_camion_charge}</TableCell>
                 <TableCell>{chargement.poids_camion_vide}</TableCell>
-                <TableCell>{chargement.shift1}</TableCell>
-                <TableCell>{chargement.shift2}</TableCell>
                 <TableCell>{chargement.operateur}</TableCell>
                 <TableCell>{chargement.chauffeur_nom}</TableCell>
                 <TableCell>{chargement.camion_immatriculation}</TableCell>

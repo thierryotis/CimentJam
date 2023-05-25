@@ -1,9 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const { addProduit, getProduits, updateProduit, deleteProduit } = require("../model/produit");
+const {canSecretaire} = require('../middleware/abilities')
+const {isAuthenticated} = require('../middleware/auth')
 
 // Add produit
-router.post("/addproduit", async (req, res, next) => {
+router.post("/addproduit",  async (req, res, next) => {
   try {
     const { nom, type } = req.body;
     const produitId = await addProduit(nom, type);
@@ -18,7 +20,7 @@ router.post("/addproduit", async (req, res, next) => {
 });
 
 // Get all produits
-router.get("/getproduits", async (req, res, next) => {
+router.get("/getproduits",  async (req, res, next) => {
   try {
     const produits = await getProduits();
     res.status(200).json({
@@ -53,7 +55,7 @@ router.put("/updateproduit/:id", async (req, res, next) => {
 });
 
 // Delete produit
-router.delete("/deleteproduit/:id", async (req, res, next) => {
+router.delete("/deleteproduit/:id",  async (req, res, next) => {
   try {
     const { id } = req.params;
     const deleted = await deleteProduit(id);

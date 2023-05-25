@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 // @mui
 import { styled, alpha } from '@mui/material/styles';
@@ -14,6 +14,7 @@ import Scrollbar from '../../../component/scrollbar';
 import NavSection from '../../../component/nav-section';
 //
 import navConfig from './config';
+import Cookies from 'js-cookie';
 
 // ----------------------------------------------------------------------
 
@@ -36,10 +37,12 @@ Nav.propTypes = {
 
 export default function Nav({ openNav, onCloseNav }) {
   const { pathname } = useLocation();
-
+  const [displayName, setDisplayName] = useState('')
   const isDesktop = useResponsive('up', 'lg');
 
   useEffect(() => {
+    const name = Cookies.get('nom')
+    setDisplayName(name)
     if (openNav) {
       onCloseNav();
     }
@@ -64,7 +67,7 @@ export default function Nav({ openNav, onCloseNav }) {
 
             <Box sx={{ ml: 2 }}>
               <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
-                {account.displayName}
+                {displayName}
               </Typography>
 
               <Typography variant="body2" sx={{ color: 'text.secondary' }}>

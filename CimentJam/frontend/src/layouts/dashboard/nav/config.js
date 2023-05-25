@@ -48,6 +48,12 @@ const navConfig = [
     icon: icon('ic_user'),
     visibility:true
   },
+  {
+    title: 'Utilisateurs',
+    path: '/dashboard/ajoututilisateur',
+    icon: icon('ic_user'),
+    visibility:true
+  },
   
   {
     title: 'Deconnexion',
