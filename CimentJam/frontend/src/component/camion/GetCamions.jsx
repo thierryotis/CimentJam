@@ -6,6 +6,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import Modal from 'react-modal';
 import { toast } from 'react-toastify';
 import { serverUrl } from '../../server';
+import Cookies from 'js-cookie';
 
 const modalStyles = {
   content: {
@@ -63,8 +64,13 @@ const GetCamions = () => {
   };
 
   useEffect(() => {
+    const token = Cookies.get('jwt')
     axios
-      .get(`${serverUrl}/api/camion/getcamions`) // Assuming the server is running on the same host
+      .get(`${serverUrl}/api/camion/getcamions`,{
+        headers: {
+          Authorization: `Bearer ${token}` // Ajoute le token dans l'en-tête Authorization de la requête
+        }
+      }) // Assuming the server is running on the same host
       .then((response) => {
         setCamions(response.data.camions);
       })

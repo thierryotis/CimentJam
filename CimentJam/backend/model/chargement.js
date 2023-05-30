@@ -31,11 +31,13 @@ const getChargements = async () => {
   try {
     const connection = await connectDatabase();
     const query = `
-      SELECT c.*, ch.nom as chauffeur_nom, ca.immatriculation as camion_immatriculation, p.nom as produit_nom
+      SELECT c.*, ch.nom as chauffeur_nom, ca.immatriculation as camion_immatriculation, p.nom as produit_nom, o.nom as operateur_nom
       FROM chargements c
       JOIN chauffeurs ch ON c.chauffeur_id = ch.id
       JOIN camions ca ON c.camion_id = ca.id
       JOIN produits p ON c.type_produit_id = p.id
+      JOIN operateurs o ON c.operateur_id = o.id
+      
     `;
     const [rows] = await connection.query(query);
     connection.end();

@@ -45,6 +45,7 @@ const chauffeur = require("./controller/chauffeur");
 const chargement = require("./controller/chargement");
 const dechargement = require("./controller/dechargement");
 const user = require("./controller/user");
+const operateur = require("./controller/operateur");
 
 
 
@@ -55,10 +56,11 @@ app.use("/api/chauffeur", chauffeur);
 app.use("/api/chargement", chargement);
 app.use("/api/dechargement", dechargement);
 app.use("/api/user", user);
+app.use("/api/operateur", operateur);
 
 
 
-console.log(listEndpoints(app));
+//console.log(listEndpoints(app));
 
 // it's for ErrorHandling
 //app.use(ErrorHandler);

@@ -23,7 +23,6 @@ router.post("/addchargement", isAuthenticated, canChargement, async (req, res, n
 router.get("/getchargements", isAuthenticated, canChargement, async (req, res, next) => {
   try {
     const chargements = await getChargements();
-    console.table(chargements)
     res.status(200).json({
       success: true,
       chargements,

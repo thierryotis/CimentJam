@@ -121,7 +121,7 @@ const GetChargements = () => {
                 <TableCell>{chargement.lieu}</TableCell>
                 <TableCell>{chargement.poids_camion_charge}</TableCell>
                 <TableCell>{chargement.poids_camion_vide}</TableCell>
-                <TableCell>{chargement.operateur}</TableCell>
+                <TableCell>{chargement.operateur_nom}</TableCell>
                 <TableCell>{chargement.chauffeur_nom}</TableCell>
                 <TableCell>{chargement.camion_immatriculation}</TableCell>
                 <TableCell>{chargement.produit_nom}</TableCell>

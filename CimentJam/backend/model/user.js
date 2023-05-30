@@ -43,17 +43,13 @@ const login = async (telephone, password) => {
         return null; // User not found
 
       }
-  
       const user = rows[0];
-      console.table (user)
-
       const isPasswordValid = await bcrypt.compare(password, user.password);
   
       if (!isPasswordValid) {
         console.log('incorrect password')
         return null; // Incorrect password
       }
-  
       return user;
     } catch (error) {
       throw error;

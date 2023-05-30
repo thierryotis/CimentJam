@@ -37,6 +37,12 @@ const navConfig = [
     visibility:true
   },
   {
+    title: 'Opérateurs',
+    path: '/dashboard/operateur',
+    icon: icon('ic_user'),
+    visibility:true
+  },
+  {
     title: 'Camions',
     path: '/dashboard/camion',
     icon: icon('ic_user'),

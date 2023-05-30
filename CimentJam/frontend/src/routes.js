@@ -14,6 +14,8 @@ import ProprioPage from './pages/ProprioPage';
 import AjoutProprioPage from './pages/AjoutProprioPage';
 import ChauffeurPage from './pages/ChauffeurPage';
 import AjoutChauffeurPage from './pages/AjoutChauffeurPage';
+import OperateurPage from './pages/OperateurPage';
+import AjoutOperateurPage from './pages/AjoutOperateurPage';
 import ProduitPage from './pages/ProduitPage';
 import AjoutProduitPage from './pages/AjoutProduitPage';
 import CamionPage from './pages/CamionPage';
@@ -40,6 +42,8 @@ export default function Router() {
         { path: 'ajoutproprio', element: (userRole === 'admin' || userRole === 'secretaire') ? <AjoutProprioPage /> : <Navigate to="/404" /> },
         { path: 'chauffeur', element: (userRole === 'admin' || userRole === 'secretaire') ? <ChauffeurPage /> : <Navigate to="/404" />},
         { path: 'ajoutchauffeur', element: (userRole === 'admin' || userRole === 'secretaire') ? <AjoutChauffeurPage /> : <Navigate to="/404" /> },
+        { path: 'operateur', element: (userRole === 'admin' || userRole === 'secretaire') ? <OperateurPage /> : <Navigate to="/404" />},
+        { path: 'ajoutoperateur', element: (userRole === 'admin' || userRole === 'secretaire') ? <AjoutOperateurPage /> : <Navigate to="/404" /> },
         { path: 'produit', element: (userRole === 'admin' || userRole === 'secretaire') ? <ProduitPage /> : <Navigate to="/404" />},
         { path: 'ajoutproduit', element: (userRole === 'admin' || userRole === 'secretaire') ? <AjoutProduitPage /> : <Navigate to="/404" />},
         { path: 'camion', element: (userRole === 'admin' || userRole === 'secretaire') ?<CamionPage />  : <Navigate to="/404" />},

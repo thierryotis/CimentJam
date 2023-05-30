@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 import { serverUrl } from '../../server';
 import { getChauffeurs } from '../chauffeur/chauffeur';
+import { getOperateurs } from '../operateur/operateur';
 import { getCamions } from '../camion/camion';
 import { getProduits } from '../produit/produit';
 import DatePicker from 'react-datepicker';
@@ -21,9 +22,10 @@ const AddChargement = () => {
   const [lieu, setLieu] = useState('');
   const [poidsCamionCharge, setPoidsCamionCharge] = useState('');
   const [poidsCamionVide, setPoidsCamionVide] = useState('');
-  const [operateur, setOperateur] = useState('');
+  const [operateurId, setOperateurId] = useState('');
   const [chauffeurId, setChauffeurId] = useState('');
   const [chauffeurOptions, setChauffeurOptions] = useState([]);
+  const [operateurOptions, setOperateurOptions] = useState([]);
   const [camionOptions, setCamionOptions] = useState([]);
   const [camionId, setCamionId] = useState('');
   const [typeProduitId, setTypeProduitId] = useState('');
@@ -40,7 +42,7 @@ const AddChargement = () => {
       lieu: lieu,
       poids_camion_charge: poidsCamionCharge,
       poids_camion_vide: poidsCamionVide,
-      operateur: operateur,
+      operateur: operateurId,
       chauffeur_id: chauffeurId,
       camion_id: camionId,
       type_produit_id: typeProduitId,
@@ -61,7 +63,7 @@ const AddChargement = () => {
         setLieu('');
         setPoidsCamionCharge('');
         setPoidsCamionVide('');
-        setOperateur('');
+        setOperateurId('');
         setChauffeurId('');
         setCamionId('');
         setTypeProduitId('');
@@ -77,6 +79,18 @@ const AddChargement = () => {
     getChauffeurs()
       .then((el) => {
         setChauffeurOptions(el);
+      })
+      .catch((error) => {
+        console.error(error);
+        // Handle error if needed
+      });
+  }, []);
+
+  useEffect(() => {
+    // Fetch operateurs data from the server
+    getOperateurs()
+      .then((el) => {
+        setOperateurOptions(el);
       })
       .catch((error) => {
         console.error(error);
@@ -121,7 +135,7 @@ const AddChargement = () => {
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
         <Typography component="h1" variant="h5">
-          Add Chargement
+          Ajouter un Chargement
         </Typography>
         <form onSubmit={handleSubmit}>
           <TextField
@@ -208,16 +222,20 @@ const AddChargement = () => {
             value={poidsCamionVide}
             onChange={(e) => setPoidsCamionVide(e.target.value)}
           />
-          <TextField
-            margin="normal"
-            required
+          <InputLabel id="chauffeurId-label">Opérateur</InputLabel>
+          <Select
+            labelId="operateurId-label"
+            id="operateurId"
+            value={operateurId}
+            onChange={(e) => setOperateurId(e.target.value)}
             fullWidth
-            name="operateur"
-            label="Operateur"
-            id="operateur"
-            value={operateur}
-            onChange={(e) => setOperateur(e.target.value)}
-          />
+          >
+            {operateurOptions.map((operateur) => (
+              <MenuItem key={operateur.id} value={operateur.id}>
+                {operateur.nom}
+              </MenuItem>
+            ))}
+          </Select>
           <InputLabel id="chauffeurId-label">Chauffeur</InputLabel>
           <Select
             labelId="chauffeurId-label"
