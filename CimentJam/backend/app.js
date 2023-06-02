@@ -14,7 +14,8 @@ require("dotenv").config({
 
 
 const corsOptions ={
-    origin:['*'], 
+    origin:["https://www.nomothierry.com/pp", "https://nomothierry.com/pp",
+    "http://www.nomothierry.com/pp", "http://nomothierry.com"], 
     credentials:true,            //access-control-allow-credentials:true
     optionSuccessStatus:200
 }
