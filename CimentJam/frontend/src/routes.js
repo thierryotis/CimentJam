@@ -26,6 +26,7 @@ import DechargementPage from './pages/DechargementPage';
 import AjoutDechargementPage from './pages/AjoutDechargementPage';
 import AjoutUtilisateur from './component/AddUser';
 import GetUsers from './component/user/GetUsers';
+import NotFoundPage from './pages/NotFoundPage';
 
 export default function Router() {
   const userRole = useContext(RoleContext); // Access the userRole from the RoleContext
@@ -65,12 +66,12 @@ export default function Router() {
       children: [
         { element: <Navigate to="/dashboard/app" />, index: true },
         { path: '404', element: <Page404 /> },
-        { path: '*', element: <Navigate to="/404" /> },
+        { path: '*', element: <LoginPage /> },
       ],
     },
     {
       path: '*',
-      element: <Navigate to="/404" replace />,
+      element: <NotFoundPage />,
     },
   ]);
 

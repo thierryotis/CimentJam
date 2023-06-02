@@ -4,3 +4,9 @@ Database : www.freemysqlhosting.net
 
 Decided to install the frontend on netlify.
 
+Site Created
+
+Admin URL: https://app.netlify.com/sites/jovial-sopapillas-3ee60b
+URL:       https://jovial-sopapillas-3ee60b.netlify.app
+Site ID:   18803b6c-fbf0-45e3-a9a1-ec17aea39c07
+
