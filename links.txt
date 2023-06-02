@@ -1,2 +1,6 @@
 Backend link : https://cimentjam.onrender.com
 
+Database : www.freemysqlhosting.net
+
+Decided to install the frontend on netlify.
+
