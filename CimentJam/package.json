@@ -1,6 +1,7 @@
 {
   "name": "cimentjam",
   "version": "1.0.0",
+  "homepage" : ".",
   "description": "management of cement inputs and outputs",
   "main": "./backend/server.js",
   "scripts": {
@@ -22,7 +23,6 @@
   "bugs": {
     "url": "https://github.com/thierryotis/CimentJam/issues"
   },
-  "homepage": "https://github.com/thierryotis/CimentJam#readme",
   "dependencies": {
     "bcrypt": "^5.1.0",
     "bcryptjs": "^2.4.3",
