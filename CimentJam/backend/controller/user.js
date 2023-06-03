@@ -44,6 +44,7 @@ router.post("/login", async (req, res, next) => {
     try {
       const { telephone, password } = req.body;
       const user = await login(telephone, password);
+      res.setHeader("Access-Control-Allow-Origin", "https://www.nomothierry.com");
       if (!user) {
         return res.status(401).json({
           success: false,
