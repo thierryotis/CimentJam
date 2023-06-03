@@ -17,7 +17,7 @@ import "react-toastify/dist/ReactToastify.css";
 export default function App() {
   return (
     <HelmetProvider>
-      <BrowserRouter>
+      <BrowserRouter basename='https://cimentjamfrontend.onrender.com/'>
         <ThemeProvider>
           <ScrollToTop />
           <StyledChart />
