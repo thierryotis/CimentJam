@@ -44,7 +44,11 @@ router.post("/login", async (req, res, next) => {
     try {
       const { telephone, password } = req.body;
       const user = await login(telephone, password);
-      res.setHeader("Access-Control-Allow-Origin", "https://www.nomothierry.com");
+        // Set CORS headers
+      res.setHeader("Access-Control-Allow-Origin", "*"); // or specify the allowed origin(s) instead of "*"
+      res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+      res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  
       if (!user) {
         return res.status(401).json({
           success: false,
