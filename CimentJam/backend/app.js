@@ -14,15 +14,14 @@ require("dotenv").config({
 
 
 const corsOptions ={
-    origin:["https://www.nomothierry.com/pp", "https://nomothierry.com/pp",
-    "http://www.nomothierry.com/pp", "http://nomothierry.com"], 
+    origin:["https://cimentjamfrontend.onrender.com"], 
     credentials:true,            //access-control-allow-credentials:true
     optionSuccessStatus:200
 }
 //app.use(cors(corsOptions));
 //app.use(cors());
 app.use((req, res, next) => {
-  const allowedOrigins = ["https://www.nomothierry.com", "https://nomothierry.com", "http://www.nomothierry.com", "http://nomothierry.com"];
+  const allowedOrigins = ["https://cimentjamfrontend.onrender.com"];
   const { origin } = req.headers;
   
   if (allowedOrigins.includes(origin)) {

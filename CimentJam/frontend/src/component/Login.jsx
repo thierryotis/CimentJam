@@ -45,11 +45,6 @@ export default function SignIn() {
       const response = await axios.post(`${serverUrl}/api/user/login`, {
         telephone,
         password,
-      },{
-        headers: {
-          'Content-Type': 'application/json',
-          'Origin': 'https://www.nomothierry.com'
-        }
       });
       const { success, token, role, nom } = response.data;
       if (success) {
