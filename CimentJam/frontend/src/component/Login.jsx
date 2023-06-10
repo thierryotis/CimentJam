@@ -16,6 +16,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios'
 import Cookie from 'js-cookie';
 import { serverUrl } from '../server';
+import { css } from '@emotion/react';
+import { BeatLoader } from 'react-spinners';
 
 function Copyright(props) {
   return (
@@ -36,10 +38,13 @@ const defaultTheme = createTheme();
 export default function SignIn() {
   const [telephone, setTelephone] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setIsLoading(true); 
 
     try {
       const response = await axios.post(`${serverUrl}/api/user/login`, {
@@ -75,6 +80,7 @@ export default function SignIn() {
     catch (error) {
       console.error(error);
     }
+    setIsLoading(false); // Masque le spinner
   };
 
   return (
@@ -122,14 +128,19 @@ export default function SignIn() {
               control={<Checkbox value="remember" color="primary" />}
               label="Se souvenir de moi"
             />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Connexion
-            </Button>
+            {isLoading ? (
+              <BeatLoader color="#ffffff" loading={isLoading} css={override} size={8} />
+            ) : (
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Connexion
+              </Button>
+            )}
+
             <Grid container>
               <Grid item xs>
                 <Link href="#" variant="body2">
