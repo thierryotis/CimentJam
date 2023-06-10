@@ -42,6 +42,13 @@ export default function SignIn() {
 
   const navigate = useNavigate();
 
+  // Define the CSS override for the spinner
+  const override = css`
+    display: block;
+    margin: 0 auto;
+    border-color: grey; // Adjust the color as needed
+  `;
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsLoading(true); 
