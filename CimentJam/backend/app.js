@@ -21,7 +21,7 @@ const corsOptions ={
 //app.use(cors(corsOptions));
 //app.use(cors());
 app.use((req, res, next) => {
-  const allowedOrigins = ["https://cimentjamfrontend.onrender.com"];
+  const allowedOrigins = ["https://cimentjamfrontend.onrender.com","https://nomothierry.com", "https://www.nomothierry.com"];
   const { origin } = req.headers;
   
   if (allowedOrigins.includes(origin)) {
