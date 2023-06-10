@@ -5,9 +5,9 @@ const connectDatabase = async () => {
     const connection = await mysql.createConnection({
       host: "sql7.freemysqlhosting.net",
       port: 3306,
-      user: "sql7622624",
-      password: "rIkAqLy1kC",
-      database: "sql7622624",
+      user: "sql7625139",
+      password: "2kMN5wHTyf",
+      database: "sql7625139",
     });
 
     console.log('Connected to the database!');
