@@ -7,6 +7,7 @@ import Modal from 'react-modal';
 import { toast } from 'react-toastify';
 import { serverUrl } from '../../server';
 import Cookies from 'js-cookie'
+import ClipLoader from 'react-spinners/ClipLoader';
 
 const modalStyles = {
   content: {
@@ -21,6 +22,7 @@ const GetChargements = () => {
   const [chargements, setChargements] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedChargement, setSelectedChargement] = useState(null);
+  const [loadingInProgress, setLoading] = useState(false);
 
   const openModal = (chargement) => {
     setSelectedChargement(chargement);
@@ -95,6 +97,11 @@ const GetChargements = () => {
 
   return (
     <>
+    {loadingInProgress ? (
+        <div className="loader-container">
+          <ClipLoader color={'#fff'} size={150} />
+        </div>
+      ) : (
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -138,7 +145,7 @@ const GetChargements = () => {
           </TableBody>
         </Table>
       </TableContainer>
-
+      )}
       <Modal isOpen={modalOpen} onRequestClose={closeModal} ariaHideApp={false} style={modalStyles}>
         {selectedChargement && (
           <>
