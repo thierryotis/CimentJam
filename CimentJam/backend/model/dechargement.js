@@ -1,4 +1,4 @@
-const connectDatabase = require('../db/Database');
+const connectDatabase = require('../db/Database_online');
 
 // Add dechargement
 const addDechargement = async (numero_bordereau, numero_bon_commande, etat_camion, date, lieu_dechargement, poids_camion_decharge, poids_camion_apres_chargement,  chargement_id) => {

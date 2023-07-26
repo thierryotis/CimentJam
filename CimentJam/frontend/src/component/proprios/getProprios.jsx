@@ -79,9 +79,9 @@ export default function GetProprios() {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Number</TableCell>
+              <TableCell>N°</TableCell>
               <TableCell>Nom</TableCell>
-              <TableCell>CNI</TableCell>
+              <TableCell>RCC</TableCell>
               <TableCell>Téléphone</TableCell>
               <TableCell>Actions</TableCell>
             </TableRow>
@@ -107,7 +107,7 @@ export default function GetProprios() {
         {selectedProprio && (
           <>
             <h2>Confirmation</h2>
-            <p>Voulez-vous vraiment supprimer ce propriétaire ?</p>
+            <p>Voulez-vous vraiment supprimer ce prestataire ?</p>
             <Button onClick={() => deleteProprio(selectedProprio.id)}>Confirmer</Button>
             <Button onClick={closeModal}>Annuler</Button>
           </>

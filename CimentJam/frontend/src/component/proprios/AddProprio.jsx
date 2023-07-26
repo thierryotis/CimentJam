@@ -11,6 +11,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {serverUrl} from '../../server';
 import { toast } from "react-toastify";
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 const defaultTheme = createTheme();
 
@@ -24,16 +25,22 @@ export default function AddProprio() {
         nom: nom,
         cni: cni,
         phone: phone,
+        type : 'prestataire'
       };
     event.preventDefault();
-    axios.post(`${serverUrl}/api/proprio/addproprio`, data)
+    const token = Cookies.get('jwt')
+    axios.post(`${serverUrl}/api/proprio/addproprio`, data, {
+      headers: {
+        Authorization: `Bearer ${token}` // Ajoute le token dans l'en-tête Authorization de la requête
+      }
+    })
       .then((response) => {
         setNom('');
         setCNI('');
         setPhone('');
         console.log(response.data); // Réponse du serveur
         // Réinitialiser les champs du formulaire
-        toast.success('Propriétaire ajouté avec succès')
+        toast.success('Prestataire ajouté avec succès')
       })
       .catch((error) => {
         console.error(error);
@@ -54,7 +61,7 @@ export default function AddProprio() {
           }}
         >
           <Typography component="h1" variant="h5">
-            Ajouter un propriétaire
+            Ajouter un prestataire
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
@@ -74,7 +81,7 @@ export default function AddProprio() {
               name="cni"
               onChange={(e) => setCNI(e.target.value)} // update state on change
               autoFocus
-              label="CNI"
+              label="Registre de Commerce"
               id="cni"
             />
             <TextField

@@ -1,11 +1,11 @@
-const connectDatabase = require('../db/Database');
+const connectDatabase = require('../db/Database_online');
 
 // Add chauffeur
-const addChauffeur = async (nom, phone, cni) => {
+const addChauffeur = async (nom, phone, cni, proprioId) => {
   try {
     const connection = await connectDatabase();
-    const query = "INSERT INTO chauffeurs (nom, phone, CNI) VALUES (?, ?, ?)";
-    const [result] = await connection.query(query, [nom, phone, cni]);
+    const query = "INSERT INTO chauffeurs (nom, phone, CNI, proprio_id) VALUES (?, ?, ?, ?)";
+    const [result] = await connection.query(query, [nom, phone, cni, proprioId ]);
     connection.end(); // Close the connection after query execution
     return result.insertId;
   } catch (error) {
@@ -30,7 +30,7 @@ const getChauffeur = async (id) => {
 const getChauffeurs = async () => {
   try {
     const connection = await connectDatabase();
-    const query = "SELECT * FROM chauffeurs";
+    const query = "SELECT chauffeurs.*, proprios.nom AS proprio_nom FROM chauffeurs INNER JOIN proprios ON chauffeurs.proprio_id = proprios.id";
     const [rows] = await connection.query(query);
     connection.end();
     return rows;

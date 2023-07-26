@@ -1,7 +1,7 @@
 {
   "name": "cimentjam",
   "version": "1.0.0",
-  "homepage" : ".",
+  "homepage": ".",
   "description": "management of cement inputs and outputs",
   "main": "./backend/server.js",
   "scripts": {

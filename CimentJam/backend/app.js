@@ -1,41 +1,25 @@
-const http = require("http");
 const express = require("express");
-const listEndpoints = require('express-list-endpoints');
+const app = express();
+//const listEndpoints = require('express-list-endpoints');
 const bodyParser = require("body-parser");
 const cors = require("cors");
+app.use(cors({
+  origin: ['http://127.0.0.1:3000', 'http://localhost:3000', 'http://127.0.0.1:80'],
+  credentials: true // Set this to true if you need to include credentials (e.g., cookies) in the request.
+}));
 
 
-const app = express();
-const server = http.createServer(app);
+
+// Enable CORS with allowed origins
+
+
 
 require("dotenv").config({
   path: "./.env",
 });
 
 
-const corsOptions ={
-    origin:["https://cimentjamfrontend.onrender.com"], 
-    credentials:true,            //access-control-allow-credentials:true
-    optionSuccessStatus:200
-}
-//app.use(cors(corsOptions));
-//app.use(cors());
-app.use((req, res, next) => {
-  const allowedOrigins = ["https://cimentjamfrontend.onrender.com",
-  "http://nomothierry.com", "https://nomothierry.com", "https://www.nomothierry.com"];
-  const { origin } = req.headers;
-  
-  if (allowedOrigins.includes(origin)) {
-    res.setHeader("Access-Control-Allow-Origin", origin);
-  }
-  
 
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  res.setHeader("Access-Control-Allow-Credentials", "true");
-
-  next();
-});
 app.use(express.json());
 app.use("/", express.static("uploads"));
 app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
@@ -80,5 +64,6 @@ app.use("/api/operateur", operateur);
 
 // it's for ErrorHandling
 //app.use(ErrorHandler);
+
 
 module.exports = app;

@@ -106,32 +106,34 @@ const GetChargements = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>N° Bordereau</TableCell>
-              <TableCell>N° Bon Commande</TableCell>
+              <TableCell>N°</TableCell>
+              <TableCell>Bord.</TableCell>
+              <TableCell>BC</TableCell>
               <TableCell>Date</TableCell>
               <TableCell>Lieu</TableCell>
-              <TableCell>Poids Camion Chargé</TableCell>
-              <TableCell>Poids Camion Vide</TableCell>
-              <TableCell>Operateur</TableCell>
+              <TableCell>Poids</TableCell>
+              <TableCell>Tracteur</TableCell>
+              <TableCell>Benne</TableCell>
               <TableCell>Chauffeur</TableCell>
-              <TableCell>Camion</TableCell>
-              <TableCell>Produit</TableCell>
+              <TableCell>Pdt</TableCell>
+              <TableCell>Prestataire</TableCell>
               <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {chargements.map((chargement) => (
+            {chargements.map((chargement, index) => (
               <TableRow key={chargement.id}>
+                <TableCell>{index+1}</TableCell>
                 <TableCell>{chargement.numero_bordereau}</TableCell>
                 <TableCell>{chargement.numero_bon_commande}</TableCell>
                 <TableCell>{chargement.date}</TableCell>
                 <TableCell>{chargement.lieu}</TableCell>
                 <TableCell>{chargement.poids_camion_charge}</TableCell>
-                <TableCell>{chargement.poids_camion_vide}</TableCell>
-                <TableCell>{chargement.operateur_nom}</TableCell>
+                <TableCell>{chargement.immatTracteur}</TableCell>
+                <TableCell>{chargement.immatBenne}</TableCell>
                 <TableCell>{chargement.chauffeur_nom}</TableCell>
-                <TableCell>{chargement.camion_immatriculation}</TableCell>
                 <TableCell>{chargement.produit_nom}</TableCell>
+                <TableCell>{chargement.prestataire_nom}</TableCell>
                 <TableCell>
                   <Button onClick={() => openModal(chargement)}>
                     <EditIcon />

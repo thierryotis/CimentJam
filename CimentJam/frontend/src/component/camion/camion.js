@@ -18,7 +18,9 @@ export function getCamion(id) {
 }
 
 export function getCamions() {
-  return axios.get(`${serverUrl}/api/camion/getcamions`,{
+  var prestataire_id = -1
+  if(arguments.length >0){ prestataire_id = arguments[0];}
+  return axios.post(`${serverUrl}/api/camion/getcamions`,{prestataire_id:prestataire_id},{
     headers: {
       Authorization: `Bearer ${token}` // Ajoute le token dans l'en-tête Authorization de la requête
     }

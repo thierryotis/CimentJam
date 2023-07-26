@@ -1,11 +1,11 @@
-const connectDatabase = require('../db/Database');
+const connectDatabase = require('../db/Database_online');
 
 // Add camion
-const addCamion = async (immatriculation, numero_benne, poids_vide, etat, mise_en_circulation, proprio_id) => {
+const addCamion = async (immatTracteur,immatBenne,PVTracteur,PVBenne,etatTracteur,etatBenne,proprioId) => {
   try {
     const connection = await connectDatabase();
-    const query = "INSERT INTO camions (immatriculation, numero_benne, poids_vide, etat, mise_en_circulation, proprio_id) VALUES (?, ?, ?, ?, ?, ?)";
-    const [result] = await connection.query(query, [immatriculation, numero_benne, poids_vide, etat, mise_en_circulation, proprio_id]);
+    const query = "INSERT INTO camions (immatTracteur,immatBenne,PVTracteur,PVBenne,etatTracteur,etatBenne,proprio_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    const [result] = await connection.query(query, [immatTracteur,immatBenne,PVTracteur,PVBenne,etatTracteur,etatBenne,proprioId]);
     connection.end(); // Close the connection after query execution
     return result.insertId;
   } catch (error) {
@@ -26,12 +26,12 @@ const getCamion = async (id) => {
   }
 };
 
-// Get all camions
-const getCamions = async () => {
+// Get all camions for a given prestataire
+const getCamions = async (prestataire_id) => {
   try {
     const connection = await connectDatabase();
-    const query = "SELECT camions.*, proprios.nom AS proprio_nom FROM camions JOIN proprios ON camions.proprio_id = proprios.id";
-    const [rows] = await connection.query(query);
+    const query = "SELECT camions.*, proprios.nom AS proprio_nom FROM camions INNER JOIN proprios ON camions.proprio_id = proprios.id WHERE camions.proprio_id = ?";
+    const [rows] = await connection.query(query, [prestataire_id]);
     connection.end();
     return rows;
   } catch (error) {
@@ -41,11 +41,11 @@ const getCamions = async () => {
 
 
 // Update camion
-const updateCamion = async (id, immatriculation, numero_benne, poids_vide, etat, mise_en_circulation, proprio_id) => {
+const updateCamion = async (id, immatriculation, type, poids_vide, etat, mise_en_circulation, proprio_id) => {
   try {
     const connection = await connectDatabase();
-    const query = "UPDATE camions SET immatriculation = ?, numero_benne = ?, poids_vide = ?, etat = ?, mise_en_circulation = ?, proprio_id = ? WHERE id = ?";
-    const [result] = await connection.query(query, [immatriculation, numero_benne, poids_vide, etat, mise_en_circulation, proprio_id, id]);
+    const query = "UPDATE camions SET immatriculation = ?, type = ?, poids_vide = ?, etat = ?, mise_en_circulation = ?, proprio_id = ? WHERE id = ?";
+    const [result] = await connection.query(query, [immatriculation, type, poids_vide, etat, mise_en_circulation, proprio_id, id]);
     connection.end();
     return result.affectedRows > 0;
   } catch (error) {

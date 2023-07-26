@@ -7,8 +7,8 @@ const { isAuthenticated } = require("../middleware/auth");
 // Add proprio
 router.post("/addproprio",isAuthenticated, canSecretaire, async (req, res, next) => {
   try {
-    const { nom, cni, phone } = req.body;
-    const proprioId = await addProprio(nom, cni, phone);
+    const { nom, cni, phone, type } = req.body;
+    const proprioId = await addProprio(nom, cni, phone, type);
     console.log(proprioId, "id du proprio ajouté")
     res.status(201).json({
       success: true,

@@ -1,12 +1,12 @@
-const  connectDatabase = require('../db/Database');
+const  connectDatabase = require('../db/Database_online');
 
 
 // Add proprio
-const addProprio = async (nom, cni, phone) => {
+const addProprio = async (nom, cni, phone, type) => {
     try {
       const connection = await connectDatabase();
-      const query = "INSERT INTO proprios (nom, cni, phone) VALUES (?, ?, ?)";
-      const [result] = await connection.query(query, [nom, cni, phone]);
+      const query = "INSERT INTO proprios (nom, cni, phone, type) VALUES (?, ?, ?, ?)";
+      const [result] = await connection.query(query, [nom, cni, phone, type]);
       connection.end(); // Close the connection after query execution
       return result.insertId;
     } catch (error) {

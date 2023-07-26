@@ -34,12 +34,21 @@ export default function GetChauffeurs() {
   };
 
   const deleteChauffeur = (id) => {
-    axios.delete(`${serverUrl}/api/chauffeur/deletechauffeur/${id}`)
+    const token = Cookie.get('jwt');
+    axios.delete(`${serverUrl}/api/chauffeur/deletechauffeur/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      withCredentials: true})
       .then(response => {
         if (response.data.success) {
           toast.success('Chauffeur supprimé avec succès');
           // Refresh the list of chauffeurs after deletion
-          axios.get(`${serverUrl}/api/chauffeur/getchauffeurs`)
+          axios.get(`${serverUrl}/api/chauffeur/getchauffeurs`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            withCredentials: true})
             .then(response => {
               setChauffeurs(response.data.chauffeurs);
             })
@@ -84,10 +93,11 @@ export default function GetChauffeurs() {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Number</TableCell>
+              <TableCell>N°</TableCell>
               <TableCell>Nom</TableCell>
               <TableCell>CNI</TableCell>
               <TableCell>Téléphone</TableCell>
+              <TableCell>Prestataire</TableCell>
               <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
@@ -98,6 +108,7 @@ export default function GetChauffeurs() {
                 <TableCell>{chauffeur.nom}</TableCell>
                 <TableCell>{chauffeur.CNI}</TableCell>
                 <TableCell>{chauffeur.phone}</TableCell>
+                <TableCell>{chauffeur.proprio_nom}</TableCell>
                 <TableCell>
                   <Button onClick={() => openModal(chauffeur)}><EditIcon /></Button>
                   <Button onClick={() => openModal(chauffeur)}><DeleteIcon /></Button>
@@ -108,7 +119,7 @@ export default function GetChauffeurs() {
         </Table>
       </TableContainer>
 
-      <Modal isOpen={modalOpen} onRequestClose={closeModal} ariaHideApp={false}>
+      <Modal isOpen={modalOpen} onRequestClose={closeModal} ariaHideApp={false} style={modalStyles}>
         {selectedChauffeur && (
           <>
             <h2>Confirmation</h2>

@@ -31,10 +31,14 @@ const GetCamions = () => {
     setSelectedCamion(null);
     setModalOpen(false);
   };
-
+  const token = Cookies.get('jwt')
   const deleteCamion = (id) => {
     axios
-      .delete(`${serverUrl}/api/camion/deletecamion/${id}`)
+      .delete(`${serverUrl}/api/camion/deletecamion/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
         if (response.data.success) {
           toast.success('Camion deleted successfully');
@@ -85,23 +89,27 @@ const GetCamions = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Immatriculation</TableCell>
-              <TableCell>Numéro Benne</TableCell>
-              <TableCell>Poids Vide (en Kg)</TableCell>
-              <TableCell>État</TableCell>
-              <TableCell>Mise en circulation</TableCell>
-              <TableCell>Proprio nom</TableCell>
+              <TableCell>N°</TableCell>
+              <TableCell>Immat. Tracteur</TableCell>
+              <TableCell>Immat. Benne</TableCell>
+              <TableCell>PV Tracteur (en T)</TableCell>
+              <TableCell>PV Benne</TableCell>
+              <TableCell>Etat Trac.</TableCell>
+              <TableCell>Etat Ben.</TableCell>
+              <TableCell>Prest.</TableCell>
               <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {camions.map((camion) => (
               <TableRow key={camion.id}>
-                <TableCell>{camion.immatriculation}</TableCell>
-                <TableCell>{camion.numero_benne}</TableCell>
-                <TableCell>{camion.poids_vide}</TableCell>
-                <TableCell>{camion.etat}</TableCell>
-                <TableCell>{camion.mise_en_circulation}</TableCell>
+                <TableCell>{camion.id}</TableCell>
+                <TableCell>{camion.immatTracteur}</TableCell>
+                <TableCell>{camion.immatBenne}</TableCell>
+                <TableCell>{camion.PVTracteur}</TableCell>
+                <TableCell>{camion.PVBenne}</TableCell>
+                <TableCell>{camion.etatTracteur}</TableCell>
+                <TableCell>{camion.etatBenne}</TableCell>
                 <TableCell>{camion.proprio_nom}</TableCell>
                 <TableCell>
                   <Button onClick={() => openModal(camion)}>

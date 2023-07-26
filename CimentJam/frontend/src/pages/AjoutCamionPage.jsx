@@ -10,13 +10,13 @@ export default function AjoutCamionPage() {
   return (
     <>
       <Helmet>
-        <title>Ajout d'un Camion</title>
+        <title>Ajout d'un Véhicule</title>
       </Helmet>
 
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            Ajout d'un Camion
+            Ajout d'un véhicule
           </Typography>
           <Button component={Link} to="/dashboard/camion" variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
             Liste

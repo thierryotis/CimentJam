@@ -7,8 +7,8 @@ const {canSecretaire} = require('../middleware/abilities')
 // Add chauffeur
 router.post("/addchauffeur",isAuthenticated, async (req, res, next) => {
   try {
-    const { nom, phone, cni } = req.body;
-    const chauffeurId = await addChauffeur(nom, phone, cni);
+    const { nom, phone, cni, proprioId } = req.body;
+    const chauffeurId = await addChauffeur(nom, phone, cni, proprioId);
     res.status(201).json({
       success: true,
       message: "Chauffeur ajouté avec succès",

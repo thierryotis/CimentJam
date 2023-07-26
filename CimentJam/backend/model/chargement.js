@@ -1,11 +1,11 @@
-const connectDatabase = require('../db/Database');
+const connectDatabase = require('../db/Database_online');
 
 // Add chargement
-const addChargement = async (numero_bordereau, numero_bon_commande, date, lieu, poids_camion_charge, poids_camion_vide,  operateur, chauffeur_id, camion_id, type_produit_id) => {
+const addChargement = async (numero_bordereau, numero_bon_commande, date, lieu, poids_camion_charge,   operateur_id, chauffeur_id, immatTracteur, immatBenne,  type_produit_id, prestataire_id, client_id) => {
   try {
     const connection = await connectDatabase();
-    const query = "INSERT INTO chargements (numero_bordereau, numero_bon_commande, date, lieu, poids_camion_charge, poids_camion_vide,  operateur, chauffeur_id, camion_id, type_produit_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    const [result] = await connection.query(query, [numero_bordereau, numero_bon_commande, date, lieu, poids_camion_charge, poids_camion_vide,  operateur, chauffeur_id, camion_id, type_produit_id]);
+    const query = "INSERT INTO chargements ( numero_bordereau, numero_bon_commande, date, lieu, poids_camion_charge,   operateur_id, chauffeur_id, immatTracteur, immatBenne,  type_produit_id, prestataire_id, client_id ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    const [result] = await connection.query(query, [ numero_bordereau, numero_bon_commande, date, lieu, poids_camion_charge,   operateur_id, chauffeur_id, immatTracteur, immatBenne, type_produit_id, prestataire_id, client_id ]);
     connection.end(); // Close the connection after query execution
     return result.insertId;
   } catch (error) {
@@ -31,12 +31,13 @@ const getChargements = async () => {
   try {
     const connection = await connectDatabase();
     const query = `
-      SELECT c.*, ch.nom as chauffeur_nom, ca.immatriculation as camion_immatriculation, p.nom as produit_nom, o.nom as operateur_nom
+      SELECT c.*, ch.nom as chauffeur_nom, ca.immatTracteur as camion_immatTracteur, ca.immatBenne as camion_immatBenne, p.nom as produit_nom, o.nom as operateur_nom, pr.nom as prestataire_nom
       FROM chargements c
       JOIN chauffeurs ch ON c.chauffeur_id = ch.id
-      JOIN camions ca ON c.camion_id = ca.id
+      JOIN camions ca ON c.immatTracteur = ca.immatTracteur
       JOIN produits p ON c.type_produit_id = p.id
       JOIN operateurs o ON c.operateur_id = o.id
+      JOIN proprios pr ON c.prestataire_id = pr.id
       
     `;
     const [rows] = await connection.query(query);
@@ -49,11 +50,11 @@ const getChargements = async () => {
 
 
 // Update chargement
-const updateChargement = async (id, numero_bordereau, numero_bon_commande, date, lieu, poids_camion_charge, poids_camion_vide,  operateur, chauffeur_id, camion_id, type_produit_id) => {
+const updateChargement = async (id, numero_bordereau, numero_bon_commande, date, lieu, poids_camion_charge,   operateur_id, chauffeur_id, camion_id, type_produit_id) => {
   try {
     const connection = await connectDatabase();
-    const query = "UPDATE chargements SET numero_bordereau = ?, numero_bon_commande = ?, date = ?, lieu = ?, poids_camion_charge = ?, poids_camion_vide = ?,  operateur = ?, chauffeur_id = ?, camion_id = ?, type_produit_id = ? WHERE id = ?";
-    const [result] = await connection.query(query, [numero_bordereau, numero_bon_commande, date, lieu, poids_camion_charge, poids_camion_vide,  operateur, chauffeur_id, camion_id, type_produit_id, id]);
+    const query = "UPDATE chargements SET numero_bordereau = ?, numero_bon_commande = ?, date = ?, lieu = ?, poids_camion_charge = ?,   operateur = ?, chauffeur_id = ?, benne_id = ?, tracteur_id= ?, type_produit_id = ? WHERE id = ?";
+    const [result] = await connection.query(query, [numero_bordereau, numero_bon_commande, date, lieu, poids_camion_charge,   operateur_id, chauffeur_id, benne_id, tracteur_id, type_produit_id, id]);
     connection.end();
     return result.affectedRows > 0;
   } catch (error) {
