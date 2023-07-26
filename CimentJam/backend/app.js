@@ -4,7 +4,10 @@ const app = express();
 const bodyParser = require("body-parser");
 const cors = require("cors");
 app.use(cors({
-  origin: ['http://127.0.0.1:3000', 'http://localhost:3000', 'http://127.0.0.1:80'],
+  origin: ['http://127.0.0.1:3000', 'http://localhost:3000', 'http://127.0.0.1:80',
+   'http://projectpartners-solutions.com', 'http://www.projectpartners-solutions.com',
+  'https://projectpartners-solutions.com','https://www.projectpartners-solutions.com',
+'http://51.254.38.237', 'https://51.254.38.237' ],
   credentials: true // Set this to true if you need to include credentials (e.g., cookies) in the request.
 }));
 
