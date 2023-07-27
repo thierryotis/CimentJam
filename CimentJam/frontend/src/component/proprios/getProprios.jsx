@@ -50,12 +50,12 @@ export default function GetProprios() {
                 closeModal();
               }, 1000);
         } else {
-          toast.error('Erreur lors de la suppression du propriétaire');
+          toast.error('Erreur lors de la suppression du Prestataire');
         }
       })
       .catch(error => {
         console.error(error);
-        toast.error('Une erreur s\'est produite lors de la suppression du propriétaire');
+        toast.error('Une erreur s\'est produite lors de la suppression du Prestataire');
         setTimeout(() => {
             closeModal();
           }, 1000);

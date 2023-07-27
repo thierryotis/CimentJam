@@ -39,6 +39,19 @@ const getCamions = async (prestataire_id) => {
   }
 };
 
+// Get all camions 
+const getAllCamions = async () => {
+  try {
+    const connection = await connectDatabase();
+    const query = "SELECT camions.*, proprios.nom AS proprio_nom FROM camions INNER JOIN proprios ON camions.proprio_id = proprios.id ";
+    const [rows] = await connection.query(query);
+    connection.end();
+    return rows;
+  } catch (error) {
+    throw error;
+  }
+};
+
 
 // Update camion
 const updateCamion = async (id, immatriculation, type, poids_vide, etat, mise_en_circulation, proprio_id) => {
@@ -70,6 +83,7 @@ module.exports = {
   addCamion,
   getCamion,
   getCamions,
+  getAllCamions,
   updateCamion,
   deleteCamion,
 };

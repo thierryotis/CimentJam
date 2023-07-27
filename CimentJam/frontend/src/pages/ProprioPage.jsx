@@ -19,13 +19,13 @@
     return (
       <>
         <Helmet>
-          <title>Propriétaires des camions</title>
+          <title>Prestataires</title>
         </Helmet>
 
         <Container>
           <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
             <Typography variant="h4" gutterBottom>
-              Propriétaires
+            Prestataires
             </Typography>
             <Button component={Link} to="/dashboard/ajoutproprio" variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
               Nouveau

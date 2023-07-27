@@ -4,8 +4,7 @@ import { Helmet } from 'react-helmet-async';
 // @mui
 import { useTheme } from '@mui/material/styles';
 import { Grid, Container, Typography } from '@mui/material';
-// component
-import Iconify from '../component/iconify';
+
 // sections
 import {
 
@@ -21,7 +20,7 @@ import { getDechargements } from '../component/dechargement/dechargement.js';
 // ----------------------------------------------------------------------
 
 export default function DashboardAppPage() {
-  const theme = useTheme();
+  //const theme = useTheme();
   const [proPrioNber, setProprioNber] = useState(0)
   const [camionNber, setCamionNber] = useState(0)
   const [chauffeurNber, setChauffeurNber] = useState(0)

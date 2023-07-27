@@ -35,12 +35,13 @@ export default function AddProprio() {
       }
     })
       .then((response) => {
-        setNom('');
-        setCNI('');
-        setPhone('');
+        
         console.log(response.data); // Réponse du serveur
         // Réinitialiser les champs du formulaire
         toast.success('Prestataire ajouté avec succès')
+        setNom('');
+        setCNI('');
+        setPhone('');
       })
       .catch((error) => {
         console.error(error);

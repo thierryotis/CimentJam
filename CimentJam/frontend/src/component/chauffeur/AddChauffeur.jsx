@@ -95,7 +95,7 @@ const AddChauffeur = () => {
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
           />
-          <InputLabel id="proprioId-label">Propriétaire</InputLabel>
+          <InputLabel id="proprioId-label">Prestataire</InputLabel>
           <Select
             labelId="proprioId-label"
             id="proprioId"

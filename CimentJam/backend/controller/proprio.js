@@ -12,7 +12,7 @@ router.post("/addproprio",isAuthenticated, canSecretaire, async (req, res, next)
     console.log(proprioId, "id du proprio ajouté")
     res.status(201).json({
       success: true,
-      message: "Propriétaire ajouté avec succès",
+      message: "Prestataire ajouté avec succès",
       proprioId,
     });
   } catch (error) {
@@ -63,12 +63,12 @@ router.put("/updateproprio/:id", async (req, res, next) => {
     if (updated) {
       res.status(200).json({
         success: true,
-        message: "Propriétaire mis à jour avec succès",
+        message: "Prestataire mis à jour avec succès",
       });
     } else {
       res.status(404).json({
         success: false,
-        message: "Propriétaire non trouvé",
+        message: "Prestataire non trouvé",
       });
     }
   } catch (error) {
@@ -84,12 +84,12 @@ router.delete("/deleteproprio/:id", async (req, res, next) => {
     if (deleted) {
       res.status(200).json({
         success: true,
-        message: "Propriétaire supprimé avec succès",
+        message: "Prestataire supprimé avec succès",
       });
     } else {
       res.status(404).json({
         success: false,
-        message: "Propriétaire non trouvé",
+        message: "Prestataire non trouvé",
       });
     }
   } catch (error) {

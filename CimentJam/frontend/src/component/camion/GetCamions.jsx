@@ -70,7 +70,7 @@ const GetCamions = () => {
   useEffect(() => {
     const token = Cookies.get('jwt')
     axios
-      .get(`${serverUrl}/api/camion/getcamions`,{
+      .get(`${serverUrl}/api/camion/getallCamions`,{
         headers: {
           Authorization: `Bearer ${token}` // Ajoute le token dans l'en-tête Authorization de la requête
         }

@@ -25,7 +25,7 @@ const navConfig = [
     visibility:true
   },
   {
-    title: 'Propriétaires',
+    title: 'Prestataires',
     path: '/dashboard/proprio',
     icon: icon('ic_user'),
     visibility:true

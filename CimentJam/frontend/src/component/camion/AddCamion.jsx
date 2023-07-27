@@ -35,6 +35,11 @@ const AddCamion = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    // Perform form validation
+    if (!immatTracteur || !immatBenne || !PVTracteur || !PVBenne || !etatTracteur || !etatBenne || !proprioId) {
+      toast.error('Tous les champs sont obligatoires');
+      return;
+    }
     const data = {
       immatTracteur: immatTracteur,
       immatBenne : immatBenne,
@@ -71,7 +76,7 @@ const AddCamion = () => {
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
         <Typography component="h1" variant="h5">
-          Add Camion
+          Ajout d'un camion
         </Typography>
         <form onSubmit={handleSubmit}>
           <TextField

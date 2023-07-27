@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { addCamion, getCamions, getCamionById, updateCamion, deleteCamion } = require("../model/camion");
+const { addCamion, getCamions,getAllCamions, getCamionById, updateCamion, deleteCamion } = require("../model/camion");
 const {isAuthenticated} = require('../middleware/auth')
 const {canSecretaire} = require('../middleware/abilities')
 
@@ -36,9 +36,9 @@ router.post("/getcamions", isAuthenticated,  async (req, res, next) => {
   }
 });
 // Get all camions
-router.get("/getAllCamions", isAuthenticated,  async (req, res, next) => {
+router.get("/getallCamions", isAuthenticated,  async (req, res, next) => {
   try {
-    const camions = await getCamions();
+    const camions = await getAllCamions();
     res.status(200).json({
       success: true,
       camions,
