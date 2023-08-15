@@ -27,6 +27,11 @@ import AjoutDechargementPage from './pages/AjoutDechargementPage';
 import AjoutUtilisateur from './component/AddUser';
 import GetUsers from './component/user/GetUsers';
 import NotFoundPage from './pages/NotFoundPage';
+import PasswordModify from './component/PasswordModify';
+import ModifyChargement from './component/chargement/ModifyChargement';
+import ModifyDechargement from './component/dechargement/ModifyDechargement';
+import ModifyCamion from './component/camion/ModifyCamion';
+import ModifyChauffeur from './component/chauffeur/ModifyChauffeur';
 
 export default function Router() {
   const userRole = useContext(RoleContext); // Access the userRole from the RoleContext
@@ -43,16 +48,20 @@ export default function Router() {
         { path: 'ajoutproprio', element: (userRole === 'admin' || userRole === 'secretaire') ? <AjoutProprioPage /> : <Navigate to="/404" /> },
         { path: 'chauffeur', element: (userRole === 'admin' || userRole === 'secretaire') ? <ChauffeurPage /> : <Navigate to="/404" />},
         { path: 'ajoutchauffeur', element: (userRole === 'admin' || userRole === 'secretaire') ? <AjoutChauffeurPage /> : <Navigate to="/404" /> },
+        { path: 'updatechauffeur', element: (userRole === 'admin' || userRole === 'secretaire') ? <ModifyChauffeur /> : <Navigate to="/404" /> },
         { path: 'operateur', element: (userRole === 'admin' || userRole === 'secretaire') ? <OperateurPage /> : <Navigate to="/404" />},
         { path: 'ajoutoperateur', element: (userRole === 'admin' || userRole === 'secretaire') ? <AjoutOperateurPage /> : <Navigate to="/404" /> },
         { path: 'produit', element: (userRole === 'admin' || userRole === 'secretaire') ? <ProduitPage /> : <Navigate to="/404" />},
         { path: 'ajoutproduit', element: (userRole === 'admin' || userRole === 'secretaire') ? <AjoutProduitPage /> : <Navigate to="/404" />},
         { path: 'camion', element: (userRole === 'admin' || userRole === 'secretaire') ?<CamionPage />  : <Navigate to="/404" />},
         { path: 'ajoutcamion', element:  (userRole === 'admin' || userRole === 'secretaire')?<AjoutCamionPage /> : <Navigate to="/404" />},
+        { path: 'updatecamion', element:  (userRole === 'admin' || userRole === 'secretaire')?<ModifyCamion /> : <Navigate to="/404" />},
         { path: 'chargement', element: (userRole === 'admin' || userRole === 'chargeur')?<ChargementPage />: <Navigate to="/404" /> },
+        { path: 'updatechargement', element: (userRole === 'admin' || userRole === 'chargeur')?<ModifyChargement />: <Navigate to="/404" /> },
         { path: 'ajoutchargement', element: (userRole === 'admin' || userRole === 'admin' || userRole === 'chargeur') ? <AjoutChargementPage /> : <Navigate to="/404" />},
         { path: 'dechargement', element: (userRole === 'admin' || userRole === 'dechargeur') ? <DechargementPage /> : <Navigate to="/404" />},
         { path: 'ajoutdechargement', element: (userRole === 'admin' || userRole === 'dechargeur') ? <AjoutDechargementPage /> : <Navigate to="/404" />},
+        { path: 'modifydechargement', element: (userRole === 'admin' || userRole === 'dechargeur') ? <ModifyDechargement /> : <Navigate to="/404" />},
         { path: 'ajoututilisateur', element: userRole === 'admin' ? <AjoutUtilisateur /> : <Navigate to="/404" />},
         { path: 'utilisateur', element: userRole === 'admin' ? <GetUsers /> : <Navigate to="/404" />}
       ],
@@ -60,6 +69,10 @@ export default function Router() {
     {
       path: 'login',
       element: <LoginPage />,
+    },
+    {
+      path: 'modifypassword',
+      element: <PasswordModify />,
     },
     {
       element: <SimpleLayout />,

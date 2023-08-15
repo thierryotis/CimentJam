@@ -54,7 +54,7 @@ router.get("/getchauffeur/:id",isAuthenticated,  async (req, res, next) => {
 });
 
 // Update chauffeur
-router.put("/updatechauffeur/:id", isAuthenticated, async (req, res, next) => {
+router.post("/updatechauffeur/:id", isAuthenticated, async (req, res, next) => {
   try {
     const { id } = req.params;
     const { nom, phone, cni } = req.body;

@@ -3,15 +3,17 @@ const router = express.Router();
 const { addDechargement, getDechargements, getDechargementById, updateDechargement, deleteDechargement } = require("../model/dechargement");
 const {canDechargement} = require('../middleware/abilities')
 const {isAuthenticated} = require('../middleware/auth')
-
+const jwt = require("jsonwebtoken");
+require('dotenv').config({ path: '../config/.env' });
 
 
 // Add dechargement
 router.post("/adddechargement",isAuthenticated, canDechargement,  async (req, res, next) => {
   try {
-    const { numero_bordereau, numero_bon_commande, etat_camion, date, lieu_dechargement, poids_camion_decharge, poids_camion_apres_chargement,  chargement_id } = req.body;
+    const { numero_bordereau, numero_bon_commande, etat_camion, date, lieu_dechargement, poids_camion_decharge, poids_camion_apres_chargement,  chargement_id, operateur_id, } = req.body;
     console.log(req.body)
-    const dechargementId = await addDechargement(numero_bordereau, numero_bon_commande, etat_camion, date,lieu_dechargement, poids_camion_decharge, poids_camion_apres_chargement,  chargement_id);
+    console.log(operateur_id)
+    const dechargementId = await addDechargement(numero_bordereau, numero_bon_commande, etat_camion, date,lieu_dechargement, poids_camion_decharge, poids_camion_apres_chargement,  chargement_id, operateur_id);
     res.status(201).json({
       success: true,
       message: "Déchargement ajouté avec succès",
@@ -57,11 +59,13 @@ router.get("/getdechargement/:id", async (req, res, next) => {
 });
 
 // Update dechargement
-router.put("/updatedechargement/:id",  async (req, res, next) => {
+router.post("/updatedechargement/:id",isAuthenticated, canDechargement,  async (req, res, next) => {
   try {
     const { id } = req.params;
+    const operateur_id = req.user.userId
+    console.log('user id', operateur_id)
     const { numero_bordereau, numero_bon_commande, etat_camion,date, lieu_dechargement, poids_camion_decharge, poids_camion_apres_chargement,  chargement_id } = req.body;
-    const updated = await updateDechargement(id, numero_bordereau, numero_bon_commande, etat_camion,date, lieu_dechargement, poids_camion_decharge, poids_camion_apres_chargement,  chargement_id);
+    const updated = await updateDechargement(id, numero_bordereau, numero_bon_commande, etat_camion,date, lieu_dechargement, poids_camion_decharge, poids_camion_apres_chargement,  chargement_id, operateur_id);
     if (updated) {
       res.status(200).json({
         success: true,

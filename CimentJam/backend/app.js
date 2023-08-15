@@ -62,7 +62,9 @@ app.use("/api/user", user);
 app.use("/api/operateur", operateur);
 
 
-
+app.use((error, req, res, next) => {
+  res.status(error.status || 500).json({ message: error.message });
+});
 //console.log(listEndpoints(app));
 
 // it's for ErrorHandling

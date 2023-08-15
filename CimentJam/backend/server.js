@@ -20,7 +20,7 @@ if (process.env.NODE_ENV !== "PRODUCTION") {
 // create server
 const server = app.listen(process.env.PORT, process.env.IPAddress, () => {
   console.log(
-    `Server is running on http://${process.env.PORT}:${process.env.PORT}`
+    `Server is running on http://${process.env.IPAddress}:${process.env.PORT}`
   );
 });
 

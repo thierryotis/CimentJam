@@ -11,9 +11,9 @@ const {canAdmin} = require('../middleware/abilities')
 // Add user
 router.post("/adduser", isAuthenticated, canAdmin, async (req, res, next) => {
   try {
-    const { nom, telephone, password, role } = req.body;
+    const { nom, telephone, email, password, role } = req.body;
     // Hash the password
-    const userId = await addUser(nom, telephone, password, role);
+    const userId = await addUser(nom, telephone,email, password, role);
     res.status(201).json({
       success: true,
       message: "Utilisateur ajouté avec succès",
@@ -45,9 +45,7 @@ router.post("/login", async (req, res, next) => {
       const { telephone, password } = req.body;
       const user = await login(telephone, password);
         // Set CORS headers
-      /*res.setHeader("Access-Control-Allow-Origin", "*"); // or specify the allowed origin(s) instead of "*"
-      res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-      res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");*/
+     
   
       if (!user) {
         return res.status(401).json({
@@ -57,16 +55,17 @@ router.post("/login", async (req, res, next) => {
       }
       // Password is correct and user is found
       // Generate a JWT token
-      const token = jwt.sign({ userId: user.id, role:user.role, nom:user.nom }, process.env.TOKEN_KEY);
+      const token = jwt.sign({ userId: user.id, role:user.role, nom:user.nom, email:user.email }, process.env.TOKEN_KEY);
       res.status(200).json({
         success: true,
         message: "Utilisateur connecté avec succès",
         token,
         role:user.role, 
-        nom : user.nom
+        nom : user.nom,
+        userid : user.id
       });
     } catch (error) {
-      return next(error);
+      return error;
     }
   });
   
@@ -107,7 +106,7 @@ router.put("/updatepassword/:id", isAuthenticated, async (req, res, next) => {
       });
     }
   } catch (error) {
-    return next(error);
+    throw(error);
   }
 });
 
@@ -123,7 +122,7 @@ router.post("/logout", isAuthenticated, async (req, res, next) => {
       message: "Utilisateur déconnecté avec succès",
     });
   } catch (error) {
-    return next(error);
+    throw(error);
   }
 });
 
@@ -145,7 +144,7 @@ router.delete("/deleteuser/:id", isAuthenticated, canAdmin, async (req, res, nex
   });
   }
   } catch (error) {
-  return next(error);
+     throw(error);
   }
   });
   
@@ -158,7 +157,7 @@ router.delete("/deleteuser/:id", isAuthenticated, canAdmin, async (req, res, nex
   users,
   });
   } catch (error) {
-  return next(error);
+    throw (error)
   }
   });
   
@@ -179,5 +178,33 @@ router.post("/role", isAuthenticated, async(req, res, next) => {
         return next(error)
     }
 });
+ 
+// a User changes its own password
+router.post("/changepassword", isAuthenticated, async(req, res, next) =>{
+  try{
+    const userEmail = req.user.email
+    const { currentPassword, newPassword } = req.body;
+    const user = await login(userEmail, currentPassword)
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: " Mot de passe actuel incorrect ligne.",
+      });
+    }
+    try {
+      const isUpdated = await updatePassword(user.id, newPassword);
+      if (isUpdated) {
+        res.status(200).json({ message: "Password updated successfully.", success:true });
+      } else {
+        res.status(400).json({ message: "Failed to update password.", success:false });
+      }
+    } catch (error) {
+      return next(error); // Handle the error using Express error handling middleware
+    }
+  }
+  catch(error){
+    return next(error)
+  }
+})
 
 module.exports = router;

@@ -54,11 +54,11 @@ const getAllCamions = async () => {
 
 
 // Update camion
-const updateCamion = async (id, immatriculation, type, poids_vide, etat, mise_en_circulation, proprio_id) => {
+const updateCamion = async (id, immatTracteur, immatBenne, PVTracteur, PVBenne, etatTracteur, etatBenne, proprioId) => {
   try {
     const connection = await connectDatabase();
-    const query = "UPDATE camions SET immatriculation = ?, type = ?, poids_vide = ?, etat = ?, mise_en_circulation = ?, proprio_id = ? WHERE id = ?";
-    const [result] = await connection.query(query, [immatriculation, type, poids_vide, etat, mise_en_circulation, proprio_id, id]);
+    const query = "UPDATE camions SET immatTracteur = ?, immatBenne = ?, PVTracteur = ?, PVBenne = ?, etatTracteur = ?, etatBenne = ?, proprio_id = ? WHERE id = ?";
+    const [result] = await connection.query(query, [immatTracteur, immatBenne, PVTracteur, PVBenne, etatTracteur, etatBenne, proprioId, id]);
     connection.end();
     return result.affectedRows > 0;
   } catch (error) {

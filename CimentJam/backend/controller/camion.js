@@ -70,12 +70,13 @@ router.get("/getcamion/:id", isAuthenticated, async (req, res, next) => {
 });
 
 // Update camion
-router.put("/updatecamion/:id",isAuthenticated,canSecretaire, async (req, res, next) => {
+router.post("/updatecamion/:id",isAuthenticated,canSecretaire, async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { immatriculation, type, poids_vide, etat, mise_en_circulation, proprio_id } = req.body;
-    const updated = await updateCamion(id, immatriculation, type, poids_vide, etat, mise_en_circulation, proprio_id);
-    if (updated) {
+    const {immatTracteur,immatBenne,PVTracteur,PVBenne,etatTracteur,etatBenne,proprioId} = req.body;
+    // Assuming you have the addCamion function defined somewhere
+    const camionId = await updateCamion(id, immatTracteur,immatBenne,PVTracteur,PVBenne,etatTracteur,etatBenne,proprioId);
+    if (camionId) {
       res.status(200).json({
         success: true,
         message: "Camion mis à jour avec succès",

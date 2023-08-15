@@ -1,6 +1,5 @@
 const jwt = require("jsonwebtoken");
 const connectDatabase = require('../db/Database_online');
-const User = require("../model/user");
 require('dotenv').config({ path: '../config/.env' });
 
 const isAuthenticated = (req, res, next) => {
@@ -10,7 +9,7 @@ const isAuthenticated = (req, res, next) => {
   try {
     // Verify and decode the token using the secret key
     const decoded = jwt.verify(token, process.env.TOKEN_KEY); // decode token to get user _id
-    console.log(decoded)
+    //console.log(decoded);
 
     // Attach the decoded user data to the request object for further processing
     req.user = decoded;
@@ -23,41 +22,44 @@ const isAuthenticated = (req, res, next) => {
   }
 };
 
+const userRole = async(req, res, next) => {
+  const token = req.headers.authorization.split(" ")[1];
+  console.dir("Hello");
 
+  if(!token) {
+    console.log("Hello");
+    return next(new Error("Please login to continue")); // 401 status handled in global error handler
+  }
 
-const userRole = async(req,res,next) => {
-    const token = req.headers.authorization.split(" ")[1]; 
-    console.dir("Hello");
+  
+  const decoded = jwt.verify(token, process.env.TOKEN_KEY);
+  var id = decoded.userId;
 
-    if(!token){
-        console.log("Hello")
-        return next(new ErrorHandler("Please login to continue", 401));
+  try {
+    const connection = await connectDatabase();
+    const query = "SELECT * FROM users WHERE id = ?";
+    const [rows] = await connection.query(query, [id]);
+    connection.end();
+
+    if (rows.length === 0) {
+      console.log('user not found');
+      return next(new Error('User not found')); // Handle the error appropriately
     }
-    console.log("Token: ", token); // add this line to log the token value
-    const decoded = jwt.verify(token, process.env.TOKEN_KEY);
-    var id = decoded.userId
-    try {
-        const connection = await connectDatabase();
-        const query = "SELECT * FROM users WHERE id = ?";
-        const [rows] = await connection.query(query, [id]);
-        connection.end();
-        
-        if (rows.length === 0) {
-          console.log('user not found')
-          return null; // User not found  
-        }
 
-        const user = rows[0];
-        console.log(user, 'user role ', user.role)
-        return user.role
+    const user = rows[0];
+    //console.log(user, 'user role ', user.role);
 
-      } catch (error) {
-        throw error;
-      }
+    // Attach the user role to the request object if needed later
+    req.userRole = user.role;
+
+    // Proceed to the next middleware or route handler
+    next();
+  } catch (error) {
+    next(error); // Pass the error to the error-handling middleware
+  }
 };
 
-
 module.exports = {
-  userRole, 
+  userRole,
   isAuthenticated
 }

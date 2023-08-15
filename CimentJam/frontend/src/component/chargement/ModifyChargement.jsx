@@ -16,27 +16,30 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 const defaultTheme = createTheme();
 
-const AddChargement = () => {
-  const [numeroBordereau, setNumeroBordereau] = useState('');
-  const [numeroBonCommande, setNumeroBonCommande] = useState('');
-  const [date, setDate] = useState('');
-  const [lieu, setLieu] = useState('');
-  const [poidsCamionCharge, setPoidsCamionCharge] = useState('');
-  const [poidsCamionVide, setPoidsCamionVide] = useState('');
-  const [prestataire, setPrestataire] = useState('');
-  const [prestataireOptions, setPrestataireOptions] = useState([]);
-  const [immatTracteur, setImmatTracteur] = useState('');
-  const [tracteurOptions, setTracteurOptions] = useState([]);
-  const [immatBenne, setImmatBenne] = useState('');
-  const [chauffeurId, setChauffeurId] = useState('');
-  const [chauffeurOptions, setChauffeurOptions] = useState([]);
-  const [camionOptions, setCamionOptions] = useState([]);
-  const [camionId, setCamionId] = useState('');
-  const [typeProduitId, setTypeProduitId] = useState('');
-  const [poidsChargement, setPoidsChargement] = useState('');
-  const [typeProduitOptions, setTypeProduitOptions] = useState([]);
-  const [showDatePicker, setShowDatePicker] = useState(false);
-  const lieux = ['Kribi', 'Foumban']
+const ModifyChargement = () => {
+    const initialChargement = Cookies.get('chargement') ? JSON.parse(Cookies.get('chargement')) : {};
+    const [operateurId, setOperateurId] = useState(initialChargement.operateur_id)
+    const [chargementId, setChargementId] = useState(initialChargement.id)
+    const [prestataire, setPrestataire] = useState(initialChargement.prestataire_id || '');
+    const [numeroBordereau, setNumeroBordereau] = useState('');
+    const [numeroBonCommande, setNumeroBonCommande] = useState('');
+    const [date, setDate] = useState('');
+    const [lieu, setLieu] = useState('');
+    const [poidsCamionCharge, setPoidsCamionCharge] = useState('');
+    const [poidsCamionVide, setPoidsCamionVide] = useState('');
+    const [prestataireOptions, setPrestataireOptions] = useState([]);
+    const [immatTracteur, setImmatTracteur] = useState(initialChargement.camion_immatTracteur || '');
+    const [tracteurOptions, setTracteurOptions] = useState([]);
+    const [immatBenne, setImmatBenne] = useState('');
+    const [chauffeurId, setChauffeurId] = useState('');
+    const [chauffeurOptions, setChauffeurOptions] = useState([]);
+    const [camionOptions, setCamionOptions] = useState([]);
+    const [camionId, setCamionId] = useState('');
+    const [typeProduitId, setTypeProduitId] = useState('');
+    const [poidsChargement, setPoidsChargement] = useState('');
+    const [typeProduitOptions, setTypeProduitOptions] = useState([]);
+    const [showDatePicker, setShowDatePicker] = useState(false);
+    const lieux = ['Kribi', 'Foumban']
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -50,20 +53,21 @@ const AddChargement = () => {
       immatTracteur: immatTracteur, // Add the immatTracteur field
       immatBenne: immatBenne, // Add the immatBenne field
       chauffeur_id: chauffeurId,
-      camion_id: camionId,
       type_produit_id: typeProduitId,
       client_id : 1
     };
     const token = Cookies.get('jwt')
     axios
-      .post(`${serverUrl}/api/chargement/addchargement`, data, {
+      .post(`${serverUrl}/api/chargement/updatechargement/${chargementId}`, data, {
         headers: {
-          Authorization: `Bearer ${token}` // Ajoute le token dans l'en-tête Authorization de la requête
+          Authorization: `Bearer ${token}`
         }
       })
       .then((response) => {
         console.log(response.data); // Server response
-        toast.success('Chargement added successfully');
+        if(response.data.success)
+        toast.success('Chargement mis à jour avec succès');
+        else toast.error('Ce chargement ne peut plus être modifié. ')
         setNumeroBordereau('');
         setNumeroBonCommande('');
         setDate('');
@@ -146,11 +150,29 @@ const AddChargement = () => {
     setShowDatePicker(false);
   };
 
+  // Pre-filll the form input
+  useEffect(() => {
+    const chargementData = Cookies.get('chargement');
+    if (chargementData) {
+      const chargement = JSON.parse(chargementData);
+        setNumeroBordereau(chargement.numero_bordereau);
+        setNumeroBonCommande(chargement.numero_bon_commande);
+        setDate(new Date(chargement.date)); // Assuming the date is stored as a string and needs to be converted to a Date object
+        setLieu(chargement.lieu);
+        setPoidsCamionCharge(chargement.poids_camion_charge);
+        setImmatTracteur(chargement.immatTracteur);
+        setImmatBenne(chargement.immatBenne);
+        setPoidsCamionVide(chargement.PVCamion);
+        setChauffeurId(chargement.chauffeur_id || ''); // Do similar assignments for any other missing fields...
+        setTypeProduitId(chargement.type_produit_id)
+    }
+  }, []);
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
         <Typography component="h1" variant="h5">
-          Ajouter un Chargement
+          Modifier un Chargement
         </Typography>
         <form onSubmit={handleSubmit}>
         <InputLabel id="prestataire-label">Prestataire</InputLabel>
@@ -308,7 +330,6 @@ const AddChargement = () => {
               <TextField {...params} label="Chauffeur" />
             )}
           />
-
           <InputLabel id="typeProduitId-label">Type Produit</InputLabel>
           <Select
             labelId="typeProduitId-label"
@@ -324,7 +345,7 @@ const AddChargement = () => {
             ))}
           </Select>
           <Button type="submit" fullWidth variant="contained" color="primary">
-            Ajouter
+            Mettre à jour
           </Button>
         </form>
       </Container>
@@ -332,4 +353,4 @@ const AddChargement = () => {
   );
 };
 
-export default AddChargement;
+export default ModifyChargement;

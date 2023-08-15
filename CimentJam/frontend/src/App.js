@@ -1,4 +1,4 @@
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, HashRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 // routes
 import Router from './routes';
@@ -17,7 +17,7 @@ import "react-toastify/dist/ReactToastify.css";
 export default function App() {
   return (
     <HelmetProvider>
-      <BrowserRouter>
+      <HashRouter>
         <ThemeProvider>
           <ScrollToTop />
           <StyledChart />
@@ -37,7 +37,7 @@ export default function App() {
         pauseOnHover
         theme="dark"
       />
-      </BrowserRouter>
+      </HashRouter>
     </HelmetProvider>
   );
 }

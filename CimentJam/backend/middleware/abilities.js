@@ -57,7 +57,7 @@ const canAdmin = (req, res, next) => {
     try {
       const decodedToken = jwt.verify(token, process.env.TOKEN_KEY);
   
-      if (decodedToken.role === 'admin' || decodedToken.role === 'chargeur') {
+      if (decodedToken.role === 'admin' || decodedToken.role === 'chargeur' || decodedToken.role === 'dechargeur') {
         next();
       } else {
         return res.status(403).json({ message: 'Access denied. User role is insufficient.' });
@@ -80,7 +80,7 @@ const canAdmin = (req, res, next) => {
       if (decodedToken.role === 'admin' || decodedToken.role === 'dechargement') {
         next();
       } else {
-        return res.status(403).json({ message: 'Access denied. User role is insufficient.' });
+        return res.status(403).json({ message: 'Access denied. User role is insufficient dechargement.' });
       }
     } catch (error) {
       return res.status(401).json({ message: 'Invalid token.' });
@@ -101,7 +101,7 @@ const canAdmin = (req, res, next) => {
       if (decodedToken.role === 'admin') {
         next();
       } else {
-        return res.status(403).json({ message: 'Access denied. User role is insufficient.' });
+        return res.status(403).json({ message: 'Access denied. User role is insufficient. List user' });
       }
     } catch (error) {
       return res.status(401).json({ message: 'Invalid token.' });
@@ -163,7 +163,8 @@ const canAdmin = (req, res, next) => {
       if (decodedToken.role === 'admin' || decodedToken.role === 'dechargeur') {
         next();
       } else {
-        return res.status(403).json({ message: 'Access denied. User role is insufficient.' });
+        console.log(decodedToken.Role)
+        return res.status(403).json({ message: 'Access denied. User role is insufficient. Can dechargement' });
       }
     } catch (error) {
       return res.status(401).json({ message: 'Invalid token.' });

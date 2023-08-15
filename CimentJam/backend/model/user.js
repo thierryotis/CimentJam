@@ -4,12 +4,12 @@ const jwt = require('jsonwebtoken');
 
 
 // Add user
-const addUser = async (nom, telephone, password, role) => {
+const addUser = async (nom, telephone,email, password, role) => {
   try {
     const connection = await connectDatabase();
     const hashedPassword = await bcrypt.hash(password, 10);
-    const query = "INSERT INTO users (nom, telephone, password, role) VALUES (?, ?, ?, ?)";
-    const [result] = await connection.query(query, [nom, telephone, hashedPassword, role]);
+    const query = "INSERT INTO users (nom, telephone,email, password, role) VALUES (?, ?, ?, ?)";
+    const [result] = await connection.query(query, [nom, telephone,email, hashedPassword, role]);
     connection.end();
     return result.insertId;
   } catch (error) {
@@ -31,11 +31,11 @@ const getUsers = async () => {
   }
 };
 // User login
-const login = async (telephone, password) => {
+const login = async (email, password) => {
     try {
       const connection = await connectDatabase();
-      const query = "SELECT * FROM users WHERE telephone = ?";
-      const [rows] = await connection.query(query, [telephone]);
+      const query = "SELECT * FROM users WHERE email = ? OR telephone = ?";
+      const [rows] = await connection.query(query, [email, email]);
       connection.end();
   
       if (rows.length === 0) {
@@ -77,17 +77,18 @@ const logout = () => {
 
 // Update user password
 const updatePassword = async (id, newPassword) => {
-    try {
-      const connection = await connectDatabase();
-      const hashedPassword = await bcrypt.hash(newPassword, 10);
-      const query = "UPDATE users SET password = ? WHERE id = ?";
-      const [result] = await connection.query(query, [hashedPassword, id]);
-      connection.end();
-      return result.affectedRows > 0;
-    } catch (error) {
-      throw error;
-    }
-  };
+  try {
+    console.log('id :', id, ' newPassword ', newPassword)
+    const connection = await connectDatabase();
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    const query = "UPDATE users SET password = ? WHERE id = ?";
+    const [result] = await connection.query(query, [hashedPassword, id]);
+    connection.end();
+    return result.affectedRows > 0;
+  } catch (error) {
+    throw error; // Propagate the error to the calling function
+  }
+};
 
 module.exports = {
   addUser,

@@ -24,7 +24,7 @@ export default function AccountPopover() {
   useEffect(()=>{
     const n = Cookies.get('nom')
     setNom(n)
-  })
+  }, [])
   const [open, setOpen] = useState(null);
 
   const handleOpen = (event) => {
@@ -34,6 +34,9 @@ export default function AccountPopover() {
   const handleClose = () => {
     setOpen(null);
   };
+  const handlePassModify = () => {
+    navigate("/modifypassword");
+  }
 
   const handleLogout = ()=>{
     setOpen(null);
@@ -41,9 +44,9 @@ export default function AccountPopover() {
     Cookies.remove('jwt')
     Cookies.remove('nom')
     Cookies.remove('role')
+    Cookies.remove('userid')
     navigate("/login");
     window.location.reload(true); 
-
   }
 
   return (
@@ -102,7 +105,11 @@ export default function AccountPopover() {
             </MenuItem>
           ))}
         </Stack>
+        <Divider sx={{ borderStyle: 'dashed' }} />
 
+        <MenuItem onClick={handlePassModify} sx={{ m: 1 }}>
+          Modifier le Mot de passe
+        </MenuItem>
         <Divider sx={{ borderStyle: 'dashed' }} />
 
         <MenuItem onClick={handleLogout} sx={{ m: 1 }}>

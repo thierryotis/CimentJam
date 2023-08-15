@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import {  useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -21,7 +22,7 @@ const GetCamions = () => {
   const [camions, setCamions] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedCamion, setSelectedCamion] = useState(null);
-
+  const navigate = useNavigate();
   const openModal = (camion) => {
     setSelectedCamion(camion);
     setModalOpen(true);
@@ -112,9 +113,12 @@ const GetCamions = () => {
                 <TableCell>{camion.etatBenne}</TableCell>
                 <TableCell>{camion.proprio_nom}</TableCell>
                 <TableCell>
-                  <Button onClick={() => openModal(camion)}>
+                <Button onClick={() => {
+                    Cookies.set('camion', JSON.stringify(camion));
+                    navigate('/dashboard/updatecamion');
+                }}>
                     <EditIcon />
-                  </Button>
+                </Button>
                   <Button onClick={() => openModal(camion)}>
                     <DeleteIcon />
                   </Button>

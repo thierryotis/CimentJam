@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import {  useNavigate } from "react-router-dom";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
@@ -24,7 +25,7 @@ const GetDechargements = () => {
   const [dechargements, setDechargements] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedDechargement, setSelectedDechargement] = useState(null);
-
+  const navigate = useNavigate();
   const openModal = (dechargement) => {
     setSelectedDechargement(dechargement);
     setModalOpen(true);
@@ -96,8 +97,9 @@ const GetDechargements = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>N° Bordereau</TableCell>
-              <TableCell>N° Bon Commande</TableCell>
+              <TableCell>N° </TableCell>
+              <TableCell>Bord.</TableCell>
+              <TableCell>BC</TableCell>
               <TableCell>Etat Camion</TableCell>
               <TableCell>Date</TableCell>
               <TableCell>Lieu </TableCell>
@@ -108,8 +110,9 @@ const GetDechargements = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {dechargements.map((dechargement) => (
+            {dechargements.map((dechargement, i) => (
               <TableRow key={dechargement.id}>
+                <TableCell>{i+1} </TableCell>
                 <TableCell>{dechargement.numero_bordereau}</TableCell>
                 <TableCell>{dechargement.numero_bon_commande}</TableCell>
                 <TableCell>{dechargement.etat_camion}</TableCell>
@@ -119,9 +122,12 @@ const GetDechargements = () => {
                 <TableCell>{dechargement.poids_camion_apres_chargement}</TableCell>
                 <TableCell>{dechargement.chargement_id}</TableCell>
                 <TableCell>
-                  <Button onClick={() => openModal(dechargement)}>
+                <Button onClick={() => {
+                    Cookies.set('dechargement', JSON.stringify(dechargement));
+                    navigate('/dashboard/modifydechargement');
+                }}>
                     <EditIcon />
-                  </Button>
+                </Button>
                   <Button onClick={() => openModal(dechargement)}>
                     <DeleteIcon />
                   </Button>

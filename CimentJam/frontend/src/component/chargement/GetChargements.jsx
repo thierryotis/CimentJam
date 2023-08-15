@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import {  useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -23,6 +24,7 @@ const GetChargements = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedChargement, setSelectedChargement] = useState(null);
   const [loadingInProgress, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const openModal = (chargement) => {
     setSelectedChargement(chargement);
@@ -135,9 +137,12 @@ const GetChargements = () => {
                 <TableCell>{chargement.produit_nom}</TableCell>
                 <TableCell>{chargement.prestataire_nom}</TableCell>
                 <TableCell>
-                  <Button onClick={() => openModal(chargement)}>
+                <Button onClick={() => {
+                    Cookies.set('chargement', JSON.stringify(chargement));
+                    navigate('/dashboard/updatechargement');
+                }}>
                     <EditIcon />
-                  </Button>
+                </Button>
                   <Button onClick={() => openModal(chargement)}>
                     <DeleteIcon />
                   </Button>

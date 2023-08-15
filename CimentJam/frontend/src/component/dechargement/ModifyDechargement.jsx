@@ -6,64 +6,63 @@ import axios from 'axios';
 import { serverUrl } from '../../server';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import moment from 'moment'
 
 import Cookies from 'js-cookie';
 
 
 const defaultTheme = createTheme();
 
-const AddDechargement = () => {
-  const [numeroBordereau, setNumeroBordereau] = useState('');
-  const [numeroBonCommande, setNumeroBonCommande] = useState('');
-  const [etatCamion, setEtatCamion] = useState('');
-  const [date, setDate] = useState('');
-  const [lieuDechargement, setLieuDechargement] = useState('Nomayos');
-  const [poidsCamionDecharge, setPoidsCamionDecharge] = useState('');
-  const [poidsCamionApresChargement, setPoidsCamionApresChargement] = useState('');
+const ModifyDechargement = () => {
+    const initialdechargement = Cookies.get('dechargement') ? JSON.parse(Cookies.get('dechargement')) : {};
+    const [numeroBordereau, setNumeroBordereau] = useState(initialdechargement.numero_bordereau);
+    const [numeroBonCommande, setNumeroBonCommande] = useState(initialdechargement.numero_bon_commande);
+    const [etatCamion, setEtatCamion] = useState(initialdechargement.etat_camion);
+    const [date, setDate] = useState(initialdechargement.date);
+    const [lieuDechargement, setLieuDechargement] = useState(initialdechargement.lieu_dechargement);
+    const [poidsCamionDecharge, setPoidsCamionDecharge] = useState(initialdechargement.poids_camion_decharge);
+    const [poidsCamionApresChargement, setPoidsCamionApresChargement] = useState(initialdechargement.poids_camion_apres_chargement);
 
-  const [chargementId, setChargementId] = useState('');
-  const [showDatePicker, setShowDatePicker] = useState(false);
-  const [chargements, setChargements] = useState([])
-  const [operateurId, setOperateurId] = useState('')
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = {
-      numero_bordereau: numeroBordereau,
-      numero_bon_commande: numeroBonCommande,
-      etat_camion: etatCamion,
-      date: date,
-      lieu_dechargement: lieuDechargement,
-      poids_camion_decharge: poidsCamionDecharge,
-      poids_camion_apres_chargement: poidsCamionApresChargement,
-      chargement_id: chargementId,
-      operateur_id : operateurId
-    };
-    const token = Cookies.get('jwt')
+    const [chargementId, setChargementId] = useState(initialdechargement.id);
+    const [showDatePicker, setShowDatePicker] = useState(false);
+    const [chargements, setChargements] = useState([])
+    const handleSubmit = (event) => {
+        event.preventDefault();
+      const data = {
+        numero_bordereau: numeroBordereau,
+        numero_bon_commande: numeroBonCommande,
+        etat_camion: etatCamion,
+        date: date,
+        lieu_dechargement: lieuDechargement,
+        poids_camion_decharge: poidsCamionDecharge,
+        poids_camion_apres_chargement: poidsCamionApresChargement,
+        chargement_id: chargementId,
+      };
+      const token = Cookies.get('jwt')
 
-    const getChargementId = ()=>{
+      const getChargementId = ()=>{
 
-    }
+      }
     axios
-      .post(`${serverUrl}/api/dechargement/adddechargement`,data,{
+      .post(`${serverUrl}/api/dechargement/updatedechargement/${chargementId}`,data,{
         headers: {
           Authorization: `Bearer ${token}` // Ajoute le token dans l'en-tête Authorization de la requête
         }
       })
       .then((response) => {
         console.log(response.data); // Server response
-        toast.success('Dechargement ajouté avec succès');
+        if(response.data.success)
+            toast.success('Dechargement mis à jour avec succès');
+        else toast.error('Erreur lors de la mise à jour')
         resetForm();
       })
       .catch((error) => {
         console.error(error);
-        toast.error('Failed to add dechargement');
+        toast.error('Echec lors de la mise à jour');
       });
   };
 
   useEffect(()=>{
     const token = Cookies.get('jwt')
-    setOperateurId(Cookies.get('userid'))
     axios.get(`${serverUrl}/api/chargement/getchargements`, {
       headers: {
         Authorization: `Bearer ${token}` // Ajoute le token dans l'en-tête Authorization de la requête
@@ -100,28 +99,22 @@ const AddDechargement = () => {
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
         <Typography component="h1" variant="h5">
-          Ajout Déchargement
+          Mise à jour Déchargement
         </Typography>
         <form onSubmit={handleSubmit}>
           
           <InputLabel id="proprioId-label">Bordereau chargement</InputLabel>
-          <Select
-            labelId="bordereauId-label"
-            id="bordereauId"
-            value={numeroBordereau}
-            onChange={(e) => {setNumeroBordereau(e.target.value);
-                const result = chargements.find(obj => obj.numero_bordereau === e.target.value);
-                setChargementId(result.id)
-              }
-            }
+          <TextField
+            margin="normal"
             fullWidth
-          >
-            {chargements.map((c) => (
-              <MenuItem key={c.id} value={c.numero_bordereau}>
-                {c.numero_bordereau}
-              </MenuItem>
-            ))}
-          </Select>
+            name="numero_bon_commande"
+            label="Numero Bon Commande"
+            id="numero_bon_commande"
+            value={numeroBordereau}
+            InputProps={{
+              readOnly: true,
+            }}
+          />
           <TextField
             margin="normal"
             fullWidth
@@ -200,7 +193,7 @@ const AddDechargement = () => {
             onChange={(e) => setPoidsCamionApresChargement(e.target.value)}
           />
           <Button type="submit" fullWidth variant="contained" color="primary">
-            Ajouter
+            Mettre à jour
           </Button>
         </form>
       </Container>
@@ -208,4 +201,4 @@ const AddDechargement = () => {
   );
 };
 
-export default AddDechargement;
+export default ModifyDechargement;

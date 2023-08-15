@@ -5,9 +5,10 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import Modal from 'react-modal';
 import Cookie from 'js-cookie';
-
+import {  useNavigate } from "react-router-dom";
 import { serverUrl } from '../../server';
 import { toast } from "react-toastify";
+import Cookies from 'js-cookie'
 
 const modalStyles = {
   content: {
@@ -22,6 +23,7 @@ export default function GetChauffeurs() {
   const [chauffeurs, setChauffeurs] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedChauffeur, setSelectedChauffeur] = useState(null);
+  const navigate = useNavigate();
 
   const openModal = (chauffeur) => {
     setSelectedChauffeur(chauffeur);
@@ -110,7 +112,12 @@ export default function GetChauffeurs() {
                 <TableCell>{chauffeur.phone}</TableCell>
                 <TableCell>{chauffeur.proprio_nom}</TableCell>
                 <TableCell>
-                  <Button onClick={() => openModal(chauffeur)}><EditIcon /></Button>
+                <Button onClick={() => {
+                    Cookies.set('chauffeur', JSON.stringify(chauffeur));
+                    navigate('/dashboard/updatechauffeur');
+                }}>
+                    <EditIcon />
+                </Button>
                   <Button onClick={() => openModal(chauffeur)}><DeleteIcon /></Button>
                 </TableCell>
               </TableRow>

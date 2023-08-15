@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {  useNavigate } from "react-router-dom";
+import Paper from '@mui/material/Paper';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -46,7 +47,7 @@ export default function SignIn() {
   const override = css`
     display: block;
     margin: 0 auto;
-    border-color: grey; // Adjust the color as needed
+    border-color: #f28122; // Adjust the color as needed
   `;
 
   const handleSubmit = async (event) => {
@@ -58,13 +59,14 @@ export default function SignIn() {
         telephone,
         password,
       });
-      const { success, token, role, nom } = response.data;
+      const { success, token, role, nom, userid } = response.data;
       if (success) {
         console.log('saving token')
         // Save the token as a cookie
         Cookie.set('jwt', token, { expires: 7 }); // Expires after 7 days
         Cookie.set('role', role, { expires: 7 }); // Expires after 7 days
         Cookie.set('nom', nom, { expires: 7 }); // Expires after 7 days
+        Cookie.set('userid', userid, { expires: 7 }); 
         //navigate to dashboard
         if(role === 'chargeur'){
           navigate("/dashboard/chargement");
@@ -110,11 +112,12 @@ export default function SignIn() {
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
+              sx={{ input: { color: 'black', borderBlockColor:'#f28122' } }}
               margin="normal"
               required
               fullWidth
               id="telephone"
-              label="Telephone"
+              label="Telephone ou email"
               name="telephone"
               autoComplete="email"
               onChange={(e) => setTelephone(e.target.value)}
@@ -136,7 +139,7 @@ export default function SignIn() {
               label="Se souvenir de moi"
             />
             {isLoading ? (
-              <BeatLoader color="#ffffff" loading={isLoading} css={override} size={8} />
+              <BeatLoader color="#521452" loading={isLoading} css={override} size={8} />
             ) : (
               <Button
                 type="submit"
@@ -157,7 +160,25 @@ export default function SignIn() {
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
+        <Paper
+          component={Grid}
+          item
+          xs={12}
+          sx={{
+            backgroundColor: '#f28122',
+            color: 'black',
+            padding: 2,
+            textAlign: 'center',
+          }}
+    >
+      <Typography variant="body2" sx={{ mb: 1 }}>
+        Copyright ©{' '}
+        <a href="https://nomothierry.com/" style={{ color: 'black' }}>
+          Project Partners
+        </a>{' '}
+        {new Date().getFullYear()}.
+      </Typography>
+    </Paper>
       </Container>
     </ThemeProvider>
   );
