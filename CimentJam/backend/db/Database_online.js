@@ -9,13 +9,7 @@ const connectDatabase = async () => {
       password: "",
       database: "cementjam",
     });
-    /*const connection = await mysql.createConnection({
-      host: "51.254.38.237",
-      port: 3306,
-      user: "CimentJam",
-      password: "rIkAqLy1kC",
-      database: "CimentJam",
-    });*/
+    
 
 
     console.log('Connected to the database!');
